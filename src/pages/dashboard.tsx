@@ -2,25 +2,14 @@
 
 import { useState } from "react";
 import { CATEGORIAS_GASTO, TIPOS_ENTRADA } from "@/data/categorias";
+import type { Transacao } from "@/types";
 
-type Transacao = {
-  id: number;
-  nome: string;
-  data: string;
-  tipo: string;
-  valor: number;
-  icone: string;
-  cor: string;
+type Props = {
+  transacoes: Transacao[];
+  setTransacoes: React.Dispatch<React.SetStateAction<Transacao[]>>;
 };
 
-const TRANSACOES_INICIAIS: Transacao[] = [
-  { id: 1, nome: "Salário",     data: "01 jun", tipo: "Receita",  valor: 5300,  icone: "🏦", cor: "#EAF3DE" },
-  { id: 2, nome: "Aluguel",     data: "05 jun", tipo: "Fixo",     valor: -1200, icone: "🏠", cor: "#FCEBEB" },
-  { id: 3, nome: "Combustível", data: "15 jun", tipo: "Variável", valor: -95,   icone: "🚗", cor: "#FAEEDA" },
-];
-
-export default function Dashboard() {
-  const [transacoes, setTransacoes] = useState<Transacao[]>(TRANSACOES_INICIAIS);
+export default function Dashboard({ transacoes, setTransacoes }: Props) {
   const [modal, setModal] = useState<"gasto" | "ganho" | null>(null);
   const [valor, setValor] = useState("");
 

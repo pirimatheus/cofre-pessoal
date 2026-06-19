@@ -1,13 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import type { Transacao } from "@/types";
+
+type Props = {
+  transacoes: Transacao[];
+};
 
 const ORCAMENTO_MOCK = [
-  { categoria: "Moradia",              gasto: 1200, limite: 1300, cor: "#378ADD" },
-  { categoria: "Alimentação",          gasto: 650,  limite: 800,  cor: "#1D9E75" },
-  { categoria: "Transporte",           gasto: 310,  limite: 350,  cor: "#EF9F27" },
-  { categoria: "Lazer",                gasto: 60,   limite: 200,  cor: "#7F77DD" },
-  { categoria: "Internet/Assinaturas", gasto: 280,  limite: 150,  cor: "#E24B4A" },
+  { categoria: "Moradia",              limite: 1300, cor: "#378ADD" },
+  { categoria: "Alimentação",          limite: 800,  cor: "#1D9E75" },
+  { categoria: "Transporte",           limite: 350,  cor: "#EF9F27" },
+  { categoria: "Lazer",                limite: 200,  cor: "#7F77DD" },
+  { categoria: "Internet/Assinaturas", limite: 150,  cor: "#E24B4A" },
 ];
 
 const SUGESTOES = [
@@ -21,8 +26,36 @@ const fmt = (v: number) =>
 
 const pct = (a: number, b: number) => Math.min(100, Math.round((a / b) * 100));
 
-export default function Orcamento() {
+export default function Orcamento({ transacoes }: Props) {
   const [mostrarRebalancear, setMostrarRebalancear] = useState(false);
+  console.log("TRANSACOES RECEBIDAS:", transacoes);
+
+  const gastoAlimentacao = transacoes
+  .filter(
+    (t) =>
+      t.tipo === "Variável" &&
+      t.nome.startsWith("Alimentação")
+  )
+  .reduce((total, t) => total + Math.abs(t.valor), 0);
+
+  console.log("Alimentação:", gastoAlimentacao);
+
+  const obterCategoria = (nome: string) => {
+    return nome.split(" - ")[0];
+  };
+
+  const calcularGastoCategoria = (categoria: string) => {
+    return transacoes
+      .filter(
+        (t) =>
+          t.tipo === "Variável" &&
+          obterCategoria(t.nome) === categoria
+      )
+      .reduce((total, t) => total + Math.abs(t.valor), 0);
+    };
+    console.log("Alimentação", calcularGastoCategoria("Alimentação"));
+    console.log("Moradia", calcularGastoCategoria("Moradia"));
+    console.log("Transporte", calcularGastoCategoria("Transporte"));
 
   return (
     <div className="flex flex-col gap-3">
@@ -31,7 +64,10 @@ export default function Orcamento() {
         <p className="text-sm font-semibold text-gray-900 mb-4">📊 Orçamento mensal</p>
 
         {ORCAMENTO_MOCK.map(o => {
-          const estourou = o.gasto > o.limite;
+
+          const gastoReal = calcularGastoCategoria(o.categoria);
+
+          const estourou = gastoReal > o.limite;
 
           return (
             <div key={o.categoria} className="mb-4">
@@ -40,14 +76,14 @@ export default function Orcamento() {
                   {o.categoria} {estourou && "⚠️"}
                 </p>
                 <p className="text-xs" style={{ color: estourou ? "#E24B4A" : "#6b7280" }}>
-                  {fmt(o.gasto)} / {fmt(o.limite)}
+                  {fmt(gastoReal)} / {fmt(o.limite)}
                 </p>
               </div>
 
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                 <div
                   className="h-full rounded-full"
-                  style={{ width: `${pct(o.gasto, o.limite)}%`, backgroundColor: o.cor }}
+                  style={{ width: `${pct(gastoReal, o.limite)}%`, backgroundColor: o.cor }}
                 />
               </div>
             </div>

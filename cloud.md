@@ -2,105 +2,511 @@
 
 ## Objetivo
 
-App pessoal de controle financeiro (gastos, ganhos, orçamento, metas e alertas), inspirado visualmente no `FinancasApp.jsx`. Fase atual: prototipagem com dados mock, sem persistência real ainda.
+App pessoal de controle financeiro (gastos, ganhos, orçamento, metas e alertas), inspirado visualmente no `FinancasApp.jsx`.
 
-## Stack
+Fase atual: prototipagem funcional com dados em memória (`useState`), estado global compartilhado para transações e início da substituição dos dados mock por cálculos reais.
+
+---
+
+# Stack
 
 - Next.js 16
 - React 19
 - TypeScript
 - Tailwind CSS v4 (`@import "tailwindcss"` em `globals.css`)
-- Sem backend/banco de dados por enquanto — tudo em `useState` local
+- Sem backend/banco de dados por enquanto
+- Persistência ainda não implementada
 
-## Arquitetura
+---
 
-Estrutura simples de SPA com roteamento manual por estado (não usa App Router para navegação entre telas):
+# Arquitetura
 
-```
+Estrutura simples de SPA com roteamento manual por estado (não utiliza App Router para navegação interna):
+
+```txt
 src/
 ├── app/
 │   ├── globals.css
 │   ├── layout.tsx
-│   └── page.tsx          ← controla qual página exibir (estado de aba ativa)
+│   └── page.tsx
+│        ├─ controla a aba ativa
+│        └─ centraliza o estado global das transações
+│
 ├── components/
 │   ├── Topbar.tsx
-│   └── Navbar.tsx         ← navegação entre as 5 abas
+│   └── Navbar.tsx
+│
 ├── data/
-│   └── categorias.ts      ← categorias de gasto e tipos de entrada (vindos da planilha AppSheet)
-└── pages/
-    ├── Dashboard.tsx
-    ├── Extrato.tsx
-    ├── Orcamento.tsx
-    ├── Metas.tsx
-    └── Alertas.tsx
+│   └── categorias.ts
+│
+├── pages/
+│   ├── Dashboard.tsx
+│   ├── Extrato.tsx
+│   ├── Orcamento.tsx
+│   ├── Metas.tsx
+│   └── Alertas.tsx
+│
+└── types.ts
 ```
 
-## Entidades
+---
 
-- **Transação**: `{ id, nome, data, tipo, valor, icone, cor }` — valor negativo = gasto, positivo = ganho
-- **Categoria de gasto**: categoria (ex: Alimentação) → lista de subtipos (ex: Supermercado, Feira/Hortifruti...)
-- **Tipo de entrada**: lista simples (Salário, Bico, Tauama Designer de Moda, Culinária Matheus)
-- **Meta**: `{ id, nome, atual, total, icone, prazo }`
-- **Item de orçamento**: `{ categoria, gasto, limite, cor }`
-- **Alerta**: `{ id, nome, desc, ativo, icone }`
+# Entidades
 
-## Casos de uso já implementados
+## Transação
 
-- Visualizar métricas, alerta e últimos lançamentos no Dashboard
-- Adicionar gasto ou ganho via modal no Dashboard (salva em `useState`, não persiste)
-- Visualizar extrato completo de transações
-- Visualizar orçamento por categoria com barra de progresso e alerta visual de estouro
-- Rebalancear orçamento (sugestões mock)
-- Visualizar metas com progresso e estratégia expansível
-- Ativar/desativar alertas via toggle
+```ts
+{
+  id,
+  nome,
+  data,
+  tipo,
+  valor,
+  icone,
+  cor
+}
+```
 
-## Casos de uso pendentes
+### Regras
 
-- Persistência real de dados (ainda decidir: localStorage, backend, etc.)
-- Responsividade geral (ajuste de tamanhos — pendente desde o início do projeto)
-- Edição/exclusão de transações
-- Conectar Orçamento/Metas aos dados reais de Gastos/Entradas (hoje são mocks desconectados)
+- Valor positivo = receita
+- Valor negativo = gasto
+- Receitas utilizam apenas o subtipo no campo nome
+- Gastos utilizam o padrão:
 
-## Regras de negócio
+```txt
+Categoria - Subtipo
+```
 
-- Gasto sempre é salvo como valor negativo na lista de transações
-- Categoria "estourou o limite" quando `gasto > limite` no Orçamento → exibir em vermelho com ⚠️
-- Cores de progresso em Metas: ≥70% verde, 40-69% laranja, <40% azul
-- **Formatação de Descrição de Transações no Modal:** Se a transação for um ganho (Receita), o campo `nome` recebe apenas o `subtipo` selecionado. Se for um gasto (Despesa), o campo `nome` é composto por `Categoria - Subtipo`.
-## Fonte de dados externa
+Exemplo:
 
-Planilha `Planilha_financeira_TAMA_DB.xlsx` (exportada de um app AppSheet existente do usuário) contém:
-- Aba **Gastos**: histórico real de gastos (descrição, tipo, valor, data serial Excel)
-- Aba **Entradas**: histórico real de ganhos (tipo, valor, data)
-- Aba **DropdownEntradas**: tipos de entrada válidos
-- Aba **ItensPorCategoria**: categoria → subtipo de gasto (fonte do `categorias.ts`)
+```txt
+Alimentação - Supermercado
+Transporte - Combustível
+Moradia - Aluguel
+```
 
-Usada como referência de categorização, não como dado importado diretamente (ainda).
+---
 
-## Convenções
+## Meta
 
-- Formatação de moeda: `Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" })`
-- Componentes de página: `"use client"` + função nomeada default export
-- Cores em hexadecimal inline via `style={{}}`, não em classes Tailwind customizadas
-- Cards: `bg-white border border-gray-200 rounded-xl p-4`
-- Texto secundário: `text-xs text-gray-400` / `text-gray-500`
+Modelo atual (mock):
 
-## Fluxo de trabalho com a IA (regra do usuário)
+```ts
+{
+  id,
+  nome,
+  atual,
+  total,
+  icone,
+  prazo
+}
+```
 
-> Uma tarefa por vez. Esperar confirmação antes de avançar. Pedir o código completo apenas quando solicitado — por padrão, explicar passo a passo para fins de aprendizado.
+Modelo planejado para V1:
 
-## Decisões arquiteturais
+```ts
+{
+  id,
+  nome,
+  valorAtual,
+  valorObjetivo,
+  possuiPrazo,
+  dataLimite,
+  icone,
+  dataCriacao
+}
+```
 
-- Sem testes automatizados nesta fase (projeto é mock-only, sem terminal/CI no fluxo de trabalho do usuário)
-- Sem monorepo, sem Docker — fluxo é chat (Claude.ai gratuito) + copiar/colar manual no VS Code
-- Metodologia adaptada do "Akita Way": mantém a essência (uma tarefa por vez, contexto documentado, IA como executora) mas descarta partes que pressupõem ambiente de terminal/testes automatizados que o usuário não usa no fluxo atual
+---
 
-## Histórico de mudanças
+## Item de Orçamento
 
-- Criadas as 5 páginas base (Dashboard, Extrato, Orçamento, Metas, Alertas)
-- Implementada página Orçamento (barras de progresso, alerta de estouro, rebalanceamento)
-- Implementada página Metas (barras de progresso, estratégia expansível)
-- Implementada página Alertas (toggles funcionais)
-- Adicionados botões de gasto/ganho no Dashboard com modal funcional
-- Iniciada extração de categorias da planilha AppSheet para `src/data/categorias.ts`
-- **Atualização do Modal de Transações:** Substituído o input manual de texto (`nome`) por seletores dinâmicos baseados em `categorias.ts`. Ajustada a função `salvar` para validar `subtipo` e concatenar dinamicamente a descrição da transação (`Categoria - Subtipo` para gastos, apenas `Subtipo` para ganhos), limpando corretamente os estados de categoria e subtipo ao fechar.
+```ts
+{
+  categoria,
+  limite,
+  cor
+}
+```
+
+O gasto passa a ser calculado dinamicamente através das transações.
+
+---
+
+## Alerta
+
+```ts
+{
+  id,
+  nome,
+  desc,
+  ativo,
+  icone
+}
+```
+
+---
+
+# Casos de Uso Implementados
+
+## Dashboard
+
+- Visualizar métricas
+- Visualizar alerta principal
+- Visualizar últimos lançamentos
+- Adicionar gasto
+- Adicionar ganho
+- Modal de lançamento funcional
+- Dropdowns dinâmicos baseados em `categorias.ts`
+
+---
+
+## Extrato
+
+- Visualizar extrato completo
+- Atualização em tempo real
+- Compartilhamento do estado global de transações
+
+---
+
+## Orçamento
+
+### Implementado
+
+- Visualizar orçamento mensal
+- Barras de progresso
+- Alerta de estouro
+- Rebalanceamento (mock)
+
+### Integração Real Implementada
+
+O orçamento agora recebe:
+
+```ts
+transacoes
+```
+
+via props.
+
+Foi implementado:
+
+```ts
+calcularGastoCategoria(categoria)
+```
+
+que soma automaticamente os gastos reais da categoria.
+
+Também foi implementado:
+
+```ts
+obterCategoria(nome)
+```
+
+que extrai a categoria a partir do padrão:
+
+```txt
+Categoria - Subtipo
+```
+
+Exemplo:
+
+```txt
+Alimentação - Supermercado
+↓
+Alimentação
+```
+
+O orçamento agora calcula dinamicamente:
+
+- Alimentação
+- Moradia
+- Transporte
+- Qualquer categoria existente nas transações
+
+Categorias sem movimentação exibem:
+
+```txt
+R$ 0,00
+```
+
+---
+
+## Metas
+
+### Implementado
+
+- Listagem de metas
+- Barra de progresso
+- Estratégia expansível
+- Indicadores visuais por percentual
+
+### Situação Atual
+
+Ainda utiliza:
+
+```ts
+METAS_MOCK
+```
+
+Sem integração com dados reais.
+
+---
+
+## Alertas
+
+- Ativar/desativar alertas
+- Toggle funcional
+
+---
+
+# Casos de Uso Pendentes
+
+## Transações
+
+- Editar transação
+- Excluir transação
+- Persistência de dados
+
+---
+
+## Orçamento
+
+- Configuração de limites pelo usuário
+- Rebalanceamento inteligente
+- Sugestões baseadas em gastos reais
+
+---
+
+## Metas
+
+### Sprint V1
+
+- Cadastro de metas pelo usuário
+- Botão "Nova Meta"
+- Modal de criação de meta
+- ID automático
+- Nome da meta
+- Valor atual
+- Valor objetivo
+- Ícone
+- Possui prazo?
+- Data limite opcional
+- Estado compartilhado de metas
+
+### Sprint V2
+
+- Editar meta
+- Excluir meta
+- Atualizar valor atual
+- Aportes manuais
+
+### Sprint V3
+
+- Histórico de aportes
+- Relacionamento entre aportes e metas
+
+### Sprint V4
+
+- Estratégia inteligente
+- Cálculo de ritmo mensal necessário
+- Projeção de conclusão
+- Comparação com prazo
+- Sugestões utilizando dados do orçamento
+- Detecção automática de atraso
+
+---
+
+# Regras de Negócio
+
+## Transações
+
+- Gasto sempre negativo
+- Receita sempre positiva
+
+---
+
+## Orçamento
+
+Categoria entra em estado de alerta quando:
+
+```txt
+gasto > limite
+```
+
+Exibir:
+
+```txt
+⚠️
+```
+
+e utilizar cor vermelha.
+
+---
+
+## Metas
+
+Cor da barra:
+
+```txt
+≥ 70% → Verde
+40% a 69% → Laranja
+< 40% → Azul
+```
+
+---
+
+# Fonte de Dados Externa
+
+Planilha:
+
+```txt
+Planilha_financeira_TAMA_DB.xlsx
+```
+
+Contém:
+
+- Gastos
+- Entradas
+- DropdownEntradas
+- ItensPorCategoria
+
+Utilizada apenas como referência estrutural.
+
+Ainda não existe importação automática.
+
+---
+
+# Convenções
+
+## Moeda
+
+```ts
+Intl.NumberFormat("pt-BR", {
+  style: "currency",
+  currency: "BRL"
+})
+```
+
+---
+
+## Componentes
+
+```txt
+"use client"
+```
+
+em páginas interativas.
+
+---
+
+## Cards
+
+```txt
+bg-white
+border border-gray-200
+rounded-xl
+p-4
+```
+
+---
+
+## Texto secundário
+
+```txt
+text-xs text-gray-400
+text-gray-500
+```
+
+---
+
+# Fluxo de Trabalho com IA
+
+Regra principal:
+
+> Uma tarefa por vez.
+
+- Não avançar sem aprovação.
+- Explicar antes de implementar.
+- Solicitar código completo apenas quando necessário.
+- Priorizar aprendizado e compreensão da arquitetura.
+
+---
+
+# Decisões Arquiteturais
+
+- Sem backend nesta fase
+- Sem banco de dados nesta fase
+- Sem Docker
+- Sem monorepo
+- Sem testes automatizados por enquanto
+- Fluxo baseado em VS Code + IA
+- Metodologia inspirada no Akita Way adaptada ao projeto
+
+---
+
+# Histórico de Mudanças
+
+## Estrutura Base
+
+- Criadas as páginas:
+  - Dashboard
+  - Extrato
+  - Orçamento
+  - Metas
+  - Alertas
+
+---
+
+## Dashboard
+
+- Criados modais de gasto e ganho
+- Integração com categorias dinâmicas
+
+---
+
+## Arquitetura
+
+- Criação de `src/types.ts`
+- Centralização do estado global em `page.tsx`
+- Implementação de Lift State Up
+
+---
+
+## Extrato
+
+- Passou a consumir transações reais do estado global
+
+---
+
+## Orçamento
+
+- Recebe transações reais via props
+- Implementada função:
+
+```ts
+calcularGastoCategoria()
+```
+
+- Implementada função:
+
+```ts
+obterCategoria()
+```
+
+- Removida dependência dos valores mock de gasto
+- Gastos calculados dinamicamente a partir das transações
+- Categorias sem movimentação exibem valor zero
+
+---
+
+## Próxima Implementação Planejada
+
+### Metas V1
+
+1. Adicionar botão "➕ Nova Meta"
+2. Criar modal de cadastro
+3. Criar estrutura de Meta em `types.ts`
+4. Elevar estado de metas para `page.tsx`
+5. Substituir `METAS_MOCK`
+6. Permitir criação de metas pelo usuário
