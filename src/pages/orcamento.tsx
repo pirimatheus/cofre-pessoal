@@ -1,19 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import type { Transacao } from "@/types";
+import type { Transacao, LimiteOrcamento } from "@/types";
+import { CATEGORIAS_GASTO } from "@/data/categorias";
 
 type Props = {
   transacoes: Transacao[];
+  limites: LimiteOrcamento[];
+  setLimites: React.Dispatch<React.SetStateAction<LimiteOrcamento[]>>;
 };
-
-const ORCAMENTO_MOCK = [
-  { categoria: "Moradia",              limite: 1300, cor: "#378ADD" },
-  { categoria: "Alimentação",          limite: 800,  cor: "#1D9E75" },
-  { categoria: "Transporte",           limite: 350,  cor: "#EF9F27" },
-  { categoria: "Lazer",                limite: 200,  cor: "#7F77DD" },
-  { categoria: "Internet/Assinaturas", limite: 150,  cor: "#E24B4A" },
-];
 
 const SUGESTOES = [
   { cat: "Internet/Assinaturas", acao: "Reduzir para R$ 150",         urgencia: "alta",  cor: "#E24B4A" },
@@ -26,104 +21,127 @@ const fmt = (v: number) =>
 
 const pct = (a: number, b: number) => Math.min(100, Math.round((a / b) * 100));
 
-export default function Orcamento({ transacoes }: Props) {
+const PALETA = ["#378ADD", "#1D9E75", "#EF9F27", "#7F77DD", "#E24B4A", "#0EA5A0"];
+
+export default function Orcamento({ transacoes, limites, setLimites }: Props) {
   const [mostrarRebalancear, setMostrarRebalancear] = useState(false);
-  console.log("TRANSACOES RECEBIDAS:", transacoes);
+  const [mostrarModalLimite, setMostrarModalLimite] = useState(false);
+  const [novaCategoria, setNovaCategoria] = useState("");
+  const [novoLimite, setNovoLimite] = useState("");
 
-  const gastoAlimentacao = transacoes
-  .filter(
-    (t) =>
-      t.tipo === "Variável" &&
-      t.nome.startsWith("Alimentação")
-  )
-  .reduce((total, t) => total + Math.abs(t.valor), 0);
+  async function adicionarLimite() {
+    if (!novaCategoria || !novoLimite) return;
+    const cor = PALETA[limites.length % PALETA.length];
+    const res = await fetch("/api/limites", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ categoria: novaCategoria, limite: Number(novoLimite), cor }),
+    });
+    const salvo = await res.json();
+    setLimites(prev => [...prev, salvo]);
+    setNovaCategoria("");
+    setNovoLimite("");
+    setMostrarModalLimite(false);
+  }
 
-  console.log("Alimentação:", gastoAlimentacao);
+  const obterCategoria = (nome: string) => nome.split(" - ")[0];
 
-  const obterCategoria = (nome: string) => {
-    return nome.split(" - ")[0];
-  };
-
-  const calcularGastoCategoria = (categoria: string) => {
-    return transacoes
-      .filter(
-        (t) =>
-          t.tipo === "Variável" &&
-          obterCategoria(t.nome) === categoria
-      )
+  const calcularGastoCategoria = (categoria: string) =>
+    transacoes
+      .filter(t => t.tipo === "Variável" && obterCategoria(t.nome) === categoria)
       .reduce((total, t) => total + Math.abs(t.valor), 0);
-    };
-    console.log("Alimentação", calcularGastoCategoria("Alimentação"));
-    console.log("Moradia", calcularGastoCategoria("Moradia"));
-    console.log("Transporte", calcularGastoCategoria("Transporte"));
 
   return (
     <div className="flex flex-col gap-3">
+      <div className="rounded-xl p-4"
+        style={{ background: "var(--color-background-primary)", border: "0.5px solid var(--color-border-tertiary)" }}>
+        <p className="font-semibold mb-4" style={{ fontSize: "var(--font-size-sm)", color: "var(--color-text-primary)" }}>📊 Orçamento mensal</p>
+        <button onClick={() => setMostrarModalLimite(true)} className="font-medium mb-3"
+          style={{ fontSize: "var(--font-size-xs)", color: "#378ADD", background: "none", border: "none", cursor: "pointer" }}>
+          ➕ Adicionar limite
+        </button>
 
-      <div className="bg-white border border-gray-200 rounded-xl p-4">
-        <p className="text-sm font-semibold text-gray-900 mb-4">📊 Orçamento mensal</p>
-
-        {ORCAMENTO_MOCK.map(o => {
-
+        {limites.map(o => {
           const gastoReal = calcularGastoCategoria(o.categoria);
-
           const estourou = gastoReal > o.limite;
-
           return (
             <div key={o.categoria} className="mb-4">
               <div className="flex justify-between items-center mb-1.5">
-                <p className="text-xs font-medium" style={{ color: estourou ? "#E24B4A" : "#6b7280" }}>
+                <p className="font-medium" style={{ fontSize: "var(--font-size-xs)", color: estourou ? "#E24B4A" : "var(--color-text-secondary)" }}>
                   {o.categoria} {estourou && "⚠️"}
                 </p>
-                <p className="text-xs" style={{ color: estourou ? "#E24B4A" : "#6b7280" }}>
+                <p style={{ fontSize: "var(--font-size-xs)", color: estourou ? "#E24B4A" : "var(--color-text-secondary)" }}>
                   {fmt(gastoReal)} / {fmt(o.limite)}
                 </p>
               </div>
-
-              <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full"
-                  style={{ width: `${pct(gastoReal, o.limite)}%`, backgroundColor: o.cor }}
-                />
+              <div className="h-2 rounded-full overflow-hidden" style={{ background: "var(--color-background-secondary)" }}>
+                <div className="h-full rounded-full" style={{ width: `${pct(gastoReal, o.limite)}%`, backgroundColor: o.cor }} />
               </div>
             </div>
           );
         })}
       </div>
 
-      <button
-        onClick={() => setMostrarRebalancear(!mostrarRebalancear)}
-        className="w-full py-2.5 rounded-xl text-sm font-medium cursor-pointer border border-gray-200 bg-gray-50 text-gray-700"
-      >
+      {mostrarModalLimite && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="w-[90%] max-w-md rounded-xl p-5 space-y-4"
+            style={{ background: "var(--color-background-primary)", border: "0.5px solid var(--color-border-tertiary)" }}>
+            <h2 className="font-semibold" style={{ fontSize: "var(--font-size-md)", color: "var(--color-text-primary)" }}>Novo limite</h2>
+            <div>
+              <label style={{ fontSize: "var(--font-size-sm)", color: "var(--color-text-secondary)" }}>Categoria</label>
+              <select className="w-full rounded-lg p-2 mt-1" style={{ fontSize: "var(--font-size-sm)", background: "var(--color-background-secondary)", border: "0.5px solid var(--color-border-secondary)", color: "var(--color-text-primary)" }}
+                value={novaCategoria} onChange={e => setNovaCategoria(e.target.value)}>
+                <option value="">Selecione...</option>
+                {Object.keys(CATEGORIAS_GASTO).map(cat => <option key={cat} value={cat}>{cat}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={{ fontSize: "var(--font-size-sm)", color: "var(--color-text-secondary)" }}>Limite (R$)</label>
+              <input type="number" className="w-full rounded-lg p-2 mt-1" style={{ fontSize: "var(--font-size-sm)", background: "var(--color-background-secondary)", border: "0.5px solid var(--color-border-secondary)", color: "var(--color-text-primary)" }}
+                value={novoLimite} onChange={e => setNovoLimite(e.target.value)} placeholder="0" />
+            </div>
+            <div className="flex gap-2 pt-2">
+              <button onClick={() => setMostrarModalLimite(false)} className="flex-1 rounded-lg p-2"
+                style={{ fontSize: "var(--font-size-sm)", background: "var(--color-background-secondary)", color: "var(--color-text-primary)", border: "0.5px solid var(--color-border-secondary)" }}>
+                Cancelar
+              </button>
+              <button onClick={adicionarLimite} className="flex-1 rounded-lg p-2 text-white"
+                style={{ fontSize: "var(--font-size-sm)", background: "#1D9E75", border: "none" }}>
+                Criar limite
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <button onClick={() => setMostrarRebalancear(!mostrarRebalancear)}
+        className="w-full py-2.5 rounded-xl font-medium cursor-pointer"
+        style={{ fontSize: "var(--font-size-sm)", border: "0.5px solid var(--color-border-secondary)", background: "var(--color-background-secondary)", color: "var(--color-text-primary)" }}>
         {mostrarRebalancear ? "▲ Fechar rebalanceamento" : "⚖️ Rebalancear orçamento"}
       </button>
 
       {mostrarRebalancear && (
-        <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-          <p className="text-sm font-semibold text-green-900 mb-3">💡 Sugestão de rebalanceamento</p>
-
+        <div className="rounded-xl p-4"
+          style={{ background: "#EAF3DE", border: "0.5px solid #97C459" }}>
+          <p className="font-semibold mb-3" style={{ fontSize: "var(--font-size-sm)", color: "#1D4F0A" }}>💡 Sugestão de rebalanceamento</p>
           {SUGESTOES.map((s, i) => (
-            <div
-              key={s.cat}
-              className="flex items-center justify-between py-2"
-              style={{ borderBottom: i < SUGESTOES.length - 1 ? "0.5px solid #bbf7d0" : "none" }}
-            >
+            <div key={s.cat} className="flex items-center justify-between py-2"
+              style={{ borderBottom: i < SUGESTOES.length - 1 ? "0.5px solid #C5E09A" : "none" }}>
               <div>
-                <p className="text-xs font-medium text-green-900">{s.cat}</p>
-                <p className="text-xs text-green-700">{s.acao}</p>
+                <p className="font-medium" style={{ fontSize: "var(--font-size-xs)", color: "#1D4F0A" }}>{s.cat}</p>
+                <p style={{ fontSize: "var(--font-size-xs)", color: "#2D6A0A" }}>{s.acao}</p>
               </div>
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-white" style={{ color: s.cor }}>
+              <span className="font-semibold px-2 py-0.5 rounded-full"
+                style={{ fontSize: "var(--font-size-xs)", background: "var(--color-background-primary)", color: s.cor }}>
                 {s.urgencia}
               </span>
             </div>
           ))}
-
-          <p className="text-xs text-green-700 mt-3">
+          <p className="mt-3" style={{ fontSize: "var(--font-size-xs)", color: "#2D6A0A" }}>
             Revisando assinaturas você libera R$ 130/mês → R$ 1.560/ano extras.
           </p>
         </div>
       )}
-
     </div>
   );
 }

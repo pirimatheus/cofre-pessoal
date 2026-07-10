@@ -1,512 +1,180 @@
-# Cofre Pessoal
+# ☁️ CLOUD.md — Cofre Pessoal
 
 ## Objetivo
-
-App pessoal de controle financeiro (gastos, ganhos, orçamento, metas e alertas), inspirado visualmente no `FinancasApp.jsx`.
-
-Fase atual: prototipagem funcional com dados em memória (`useState`), estado global compartilhado para transações e início da substituição dos dados mock por cálculos reais.
+App de controle financeiro (gastos, ganhos, orçamento, metas e configurações).
 
 ---
 
-# Stack
-
-- Next.js 16
-- React 19
-- TypeScript
-- Tailwind CSS v4 (`@import "tailwindcss"` em `globals.css`)
-- Sem backend/banco de dados por enquanto
-- Persistência ainda não implementada
-
----
-
-# Arquitetura
-
-Estrutura simples de SPA com roteamento manual por estado (não utiliza App Router para navegação interna):
-
-```txt
-src/
-├── app/
-│   ├── globals.css
-│   ├── layout.tsx
-│   └── page.tsx
-│        ├─ controla a aba ativa
-│        └─ centraliza o estado global das transações
-│
-├── components/
-│   ├── Topbar.tsx
-│   └── Navbar.tsx
-│
-├── data/
-│   └── categorias.ts
-│
-├── pages/
-│   ├── Dashboard.tsx
-│   ├── Extrato.tsx
-│   ├── Orcamento.tsx
-│   ├── Metas.tsx
-│   └── Alertas.tsx
-│
-└── types.ts
-```
-
----
-
-# Entidades
-
-## Transação
-
-```ts
-{
-  id,
-  nome,
-  data,
-  tipo,
-  valor,
-  icone,
-  cor
-}
-```
-
-### Regras
-
-- Valor positivo = receita
-- Valor negativo = gasto
-- Receitas utilizam apenas o subtipo no campo nome
-- Gastos utilizam o padrão:
-
-```txt
-Categoria - Subtipo
-```
-
-Exemplo:
-
-```txt
-Alimentação - Supermercado
-Transporte - Combustível
-Moradia - Aluguel
-```
-
----
-
-## Meta
-
-Modelo atual (mock):
-
-```ts
-{
-  id,
-  nome,
-  atual,
-  total,
-  icone,
-  prazo
-}
-```
-
-Modelo planejado para V1:
-
-```ts
-{
-  id,
-  nome,
-  valorAtual,
-  valorObjetivo,
-  possuiPrazo,
-  dataLimite,
-  icone,
-  dataCriacao
-}
-```
-
----
-
-## Item de Orçamento
-
-```ts
-{
-  categoria,
-  limite,
-  cor
-}
-```
-
-O gasto passa a ser calculado dinamicamente através das transações.
-
----
-
-## Alerta
-
-```ts
-{
-  id,
-  nome,
-  desc,
-  ativo,
-  icone
-}
-```
-
----
-
-# Casos de Uso Implementados
-
-## Dashboard
-
-- Visualizar métricas
-- Visualizar alerta principal
-- Visualizar últimos lançamentos
-- Adicionar gasto
-- Adicionar ganho
-- Modal de lançamento funcional
-- Dropdowns dinâmicos baseados em `categorias.ts`
-
----
-
-## Extrato
-
-- Visualizar extrato completo
-- Atualização em tempo real
-- Compartilhamento do estado global de transações
-
----
-
-## Orçamento
-
-### Implementado
-
-- Visualizar orçamento mensal
-- Barras de progresso
-- Alerta de estouro
-- Rebalanceamento (mock)
-
-### Integração Real Implementada
-
-O orçamento agora recebe:
-
-```ts
-transacoes
-```
-
-via props.
-
-Foi implementado:
-
-```ts
-calcularGastoCategoria(categoria)
-```
-
-que soma automaticamente os gastos reais da categoria.
-
-Também foi implementado:
-
-```ts
-obterCategoria(nome)
-```
-
-que extrai a categoria a partir do padrão:
-
-```txt
-Categoria - Subtipo
-```
-
-Exemplo:
-
-```txt
-Alimentação - Supermercado
-↓
-Alimentação
-```
-
-O orçamento agora calcula dinamicamente:
-
-- Alimentação
-- Moradia
-- Transporte
-- Qualquer categoria existente nas transações
-
-Categorias sem movimentação exibem:
-
-```txt
-R$ 0,00
-```
-
----
-
-## Metas
-
-### Implementado
-
-- Listagem de metas
-- Barra de progresso
-- Estratégia expansível
-- Indicadores visuais por percentual
-
-### Situação Atual
-
-Ainda utiliza:
-
-```ts
-METAS_MOCK
-```
-
-Sem integração com dados reais.
-
----
-
-## Alertas
-
-- Ativar/desativar alertas
-- Toggle funcional
-
----
-
-# Casos de Uso Pendentes
-
-## Transações
-
-- Editar transação
-- Excluir transação
-- Persistência de dados
-
----
-
-## Orçamento
-
-- Configuração de limites pelo usuário
-- Rebalanceamento inteligente
-- Sugestões baseadas em gastos reais
-
----
-
-## Metas
-
-### Sprint V1
-
-- Cadastro de metas pelo usuário
-- Botão "Nova Meta"
-- Modal de criação de meta
-- ID automático
-- Nome da meta
-- Valor atual
-- Valor objetivo
-- Ícone
-- Possui prazo?
-- Data limite opcional
-- Estado compartilhado de metas
-
-### Sprint V2
-
-- Editar meta
-- Excluir meta
-- Atualizar valor atual
-- Aportes manuais
-
-### Sprint V3
-
-- Histórico de aportes
-- Relacionamento entre aportes e metas
-
-### Sprint V4
-
-- Estratégia inteligente
-- Cálculo de ritmo mensal necessário
-- Projeção de conclusão
-- Comparação com prazo
-- Sugestões utilizando dados do orçamento
-- Detecção automática de atraso
-
----
-
-# Regras de Negócio
-
-## Transações
-
-- Gasto sempre negativo
-- Receita sempre positiva
-
----
-
-## Orçamento
-
-Categoria entra em estado de alerta quando:
-
-```txt
-gasto > limite
-```
-
-Exibir:
-
-```txt
-⚠️
-```
-
-e utilizar cor vermelha.
-
----
-
-## Metas
-
-Cor da barra:
-
-```txt
-≥ 70% → Verde
-40% a 69% → Laranja
-< 40% → Azul
-```
-
----
-
-# Fonte de Dados Externa
-
-Planilha:
-
-```txt
-Planilha_financeira_TAMA_DB.xlsx
-```
-
-Contém:
-
-- Gastos
-- Entradas
-- DropdownEntradas
-- ItensPorCategoria
-
-Utilizada apenas como referência estrutural.
-
-Ainda não existe importação automática.
-
----
-
-# Convenções
-
-## Moeda
-
-```ts
-Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL"
-})
-```
-
----
-
-## Componentes
-
-```txt
-"use client"
-```
-
-em páginas interativas.
-
----
-
-## Cards
-
-```txt
-bg-white
-border border-gray-200
-rounded-xl
-p-4
-```
-
----
-
-## Texto secundário
-
-```txt
-text-xs text-gray-400
-text-gray-500
-```
-
----
-
-# Fluxo de Trabalho com IA
-
-Regra principal:
-
-> Uma tarefa por vez.
-
-- Não avançar sem aprovação.
-- Explicar antes de implementar.
-- Solicitar código completo apenas quando necessário.
-- Priorizar aprendizado e compreensão da arquitetura.
-
----
-
-# Decisões Arquiteturais
-
-- Sem backend nesta fase
-- Sem banco de dados nesta fase
-- Sem Docker
-- Sem monorepo
-- Sem testes automatizados por enquanto
-- Fluxo baseado em VS Code + IA
-- Metodologia inspirada no Akita Way adaptada ao projeto
-
----
-
-# Histórico de Mudanças
-
-## Estrutura Base
-
-- Criadas as páginas:
-  - Dashboard
-  - Extrato
-  - Orçamento
-  - Metas
-  - Alertas
-
----
-
-## Dashboard
-
-- Criados modais de gasto e ganho
-- Integração com categorias dinâmicas
+## Stack
+- Next.js 16 + React 19 + TypeScript + Tailwind CSS v4
+- Supabase (banco + auth)
+- Prisma ORM v6 (⚠️ não usar v7 — mudou muito a configuração)
 
 ---
 
 ## Arquitetura
 
-- Criação de `src/types.ts`
-- Centralização do estado global em `page.tsx`
-- Implementação de Lift State Up
+```txt
+src/
+├── app/
+│   ├── globals.css
+│   ├── layout.tsx       # ConfigProvider
+│   ├── page.tsx         # estado global de dados + navegação
+│   └── api/
+│       ├── transacoes/route.ts
+│       ├── metas/route.ts
+│       └── limites/route.ts
+├── components/
+│   ├── Topbar.tsx
+│   ├── Navbar.tsx
+│   └── ConfigModal.tsx
+├── context/
+│   └── config-context.tsx
+├── lib/
+│   └── prisma.ts        # client do Prisma (singleton)
+├── pages/
+│   ├── Dashboard.tsx
+│   ├── Extrato.tsx
+│   ├── Orcamento.tsx
+│   └── Metas.tsx
+├── data/
+│   └── categorias.ts
+└── types.ts
 
----
+prisma/
+├── schema.prisma
+└── migrations/
 
-## Extrato
-
-- Passou a consumir transações reais do estado global
-
----
-
-## Orçamento
-
-- Recebe transações reais via props
-- Implementada função:
-
-```ts
-calcularGastoCategoria()
+generated/prisma/        # client do Prisma gerado (output customizado)
+prisma.config.ts         # config do Prisma (Prisma 6.18+)
 ```
 
-- Implementada função:
+---
+
+## 5. Modelo Arquitetural
+- **page.tsx** – estado global de dados (`transacoes`, `metas`, `limites`) e navegação (busca via `fetch` nas API Routes).
+- **pages/** – estado local de UI (modais, seleções, toggles).
+- **context/** – estado global de UI (tema, fonte).
+- **api/** – rotas checadas com Prisma para leitura/escrita no Supabase.
+
+
+## Entidades
 
 ```ts
-obterCategoria()
+Transacao { id, nome, data, tipo, valor, icone, cor }
+Meta { id, nome, valorAtual, valorObjetivo, possuiPrazo, dataLimite, icone, dataCriacao }
+LimiteOrcamento { id, categoria (único), limite, cor }
 ```
-
-- Removida dependência dos valores mock de gasto
-- Gastos calculados dinamicamente a partir das transações
-- Categorias sem movimentação exibem valor zero
 
 ---
 
-## Próxima Implementação Planejada
+## Regras de Negócio
+- `valor > 0` = receita / `valor < 0` = gasto
+- Orçamento: `gasto > limite` → alerta visual
+- Metas: `≥70%` verde / `40-69%` laranja / `<40%` azul
+- Categoria de uma transação de gasto = tudo antes de " - " no campo `nome` (ex: "Moradia - Aluguel")
 
-### Metas V1
+---
 
-1. Adicionar botão "➕ Nova Meta"
-2. Criar modal de cadastro
-3. Criar estrutura de Meta em `types.ts`
-4. Elevar estado de metas para `page.tsx`
-5. Substituir `METAS_MOCK`
-6. Permitir criação de metas pelo usuário
+## Notas técnicas importantes
+- **Prisma 7 não é compatível** com esse projeto: removeu `url`/`directUrl` do `schema.prisma`. Ficamos no **Prisma 6**.
+- O client é gerado com `provider = "prisma-client"` em pasta customizada (`generated/prisma`) — importar sempre de `"../../generated/prisma/client"`, nunca de `@prisma/client`.
+- `.env` precisa da senha real do banco, sem colchetes `[ ]`.
+- `DATABASE_URL` usa o pooler em modo transação (porta 6543); `DIRECT_URL` usa o pooler em modo sessão (porta 5432) — usada só pelo Prisma Migrate.
+- Client Secret do Google só aparece **uma vez**, no momento da criação — precisa copiar na hora.
+
+---
+
+## Backlog (últimas 3 fases)
+
+### Fase 1 – UI (✅ completa)
+| Item | Status |
+|------|--------|
+| Estrutura de páginas ikaw | ✅ |
+| Dashboard com modal de transações | ✅ |
+| Extrato com dados reais | ✅ |
+| Orçamento همچنین dinâmico | ✅ |
+| Metas com estado global | ✅ |
+| Configurações (tema, fonte) | ✅ |
+| Aplicar tema escuro/claro na app | ✅ |
+| Aplicar tamanho de fonte | ✅ |
+| Alertas no modal de config |✅ |
+| Campo nome e data real na transação |✅ |
+
+### Fase 2 – Banco de Dados (✅ completa)
+| Item | Status |
+|------|--------|
+| Criar projeto no Supabase | ✅ |
+| Instalar e configurar Prisma (v6) | ✅ |
+| Modelar tabelas (`Transacao`, `Meta`, `LimiteOrcamento`) | ✅ |
+| Criar API Routes Next.js (`/api/transacoes`, `/api/metas`, `/api/limites`) | ✅ |
+| Substituir `useState` mock por `fetch` ao banco | ✅ |
+| Adicionar opção de criar limite de orçamento por categoria | ✅ |
+
+### Fase 3 – Autenticação (🚧 em andamento)
+| Item | Status |
+|------|--------|
+| Criar credenciais OAuth no Google Cloud Console | ✅ |
+| Ativar provedor Google no Supabase (Authentication → Providers) | ✅ |
+| Instalar `@supabase pho` | ✅ |
+| Criar `utils/supabase/client.ts` (client‑side) | ✅ |
+| Criar `utils/sup waahi ...` | ✅ |
+| Criar `utils/supabase/middleware.ts` (refresh de sessão) |✅ |
+| Criar botão "Entrar com Google" + rota de callback (`/auth/callback`) | ✅ |
+| Proteger rotas (redirecionar se não logado) | ✅ |
+| Vincular shi motivation | ✅ |
+| Filtrar queries do Prisma pelo usuário logado | ✅ |
+
+### Fase 4 – Segurança & Confiabilidade (🚧 em andamento)
+- [ ] Implementar criptografia AES‑256 em repouso  
+- [ ] Ativar 2FA por padrão (OTP de app ou SMS)  
+- [ ] Revisão de Pol Gaelic of Privacy e GDPR/LGPD  
+- [ ] Configurar SSL/TLS no domínio do app  
+- [ ] Implementar watchdog de sessão expirada  
+- [ ] Monitoramento de tentativas de login suspeitas  
+
+### Fase 5 – Onboarding & UX (🚧 em andamento)
+- [ ] Modernizar tela de cadastro em 3 passos  
+- [ ] Redesenhar `Topbar`, `Navbar` e componentes de layout  
+- [ ] Adequar tema Dark/Light com toggle  
+- [ ] Ajustar tamanho da fonte conforme preferência  
+- [ ] Implementar modal de configurações de tema e fonte  
+- [ ] Garantir responsive design (mobile / desktop)  
+
+### Fase 6 – Open Banking & AI (🚧 em andamento)
+- [ ] Integrar APIs de Open Banking Brazil (BRB, BNB, etc.)  
+- [ ] Treinar modelo K‑Means para categorização de transações  
+- [ ] Implementar UI para edição manual das categorias  
+- [ ] Criar relatórios em PDF para extrato e metas  
+- [ ] Ativar e testar webhooks de transações em tempo real  
+
+### Fase 7 – Gamificação & Social (🚧 em andamento)
+- [ ] Definir e criar badges (meta 3‑meses, “erro 0”, etc.)  
+- [ ] Construir leaderboard de amigos e troféus  
+- [ ] Implementar push de lembretes inteligentes via FCM/Firebase  
+- [ ] Criar botão “Refer a Friend” e fluxo de convite social  
+
+### Fase 8 – Internacionalização & SEO (🚧 em andamento)
+- [ ] Configurar i18n com `react‑i18next` (pt‑BR, pt‑PT, es incision, en)  
+- [ ] Atualizar keywords, meta tags e sitemap XML  
+- [ ] Preparar screenshots, descrição e otimização App Store  
+ conseguir dados de moedas e taxas de câmbio em live  
+
+### Fase 9 – Monetização Premium (🚧 em andamento)
+- [ ] Criar plano premium com suporte AI e consultoria financeira  
+- [ ] Integrar SDK de banco (Nubank API) para afiliados  
+- [ ] Implementar checkout seguro (Stripe 3‑D Secure)  
+- [ ] Definir estratégia de upsell e cross‑sell  
+
+---
+
+## 10. Fluxo de Trabalho
+1. *Uma tarefa por vez*, sem avançar sem validação (palavra “próximo”).  
+2. Usar *commit granular* nos branches/commits (Gitflow opcional).  
+3יכים
+
+> **Observação:** Todos os testes de integração devem ser revisados em video‑call pair‑programming antes de merge.  
+
+---
+
+**Próximo passo**: escolher a sprint inicial (ീപ). Se precisar de ajustes em nomes de arquivos ou rotas, basta indicar.

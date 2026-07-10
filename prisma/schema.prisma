@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Transacao {
+  id     Int      @id @default(autoincrement())
+  nome   String
+  data   DateTime
+  tipo   String
+  valor  String
+  icone  String
+  cor    String
+  userId String
+
+  @@index([userId])
+}
+
+model Meta {
+  id            Int      @id @default(autoincrement())
+  nome          String
+  valorAtual    String
+  valorObjetivo String
+  possuiPrazo   Boolean
+  dataLimite    DateTime?
+  icone         String
+  dataCriacao   DateTime
+  userId        String
+
+  @@index([userId])
+}
+
+model LimiteOrcamento {
+  id       Int    @id @default(autoincrement())
+  categoria String @unique
+  limite   String
+  cor      String
+  userId   String
+
+  @@unique([categoria, userId])
+  @@index([userId])
+}
+
