@@ -17,10 +17,14 @@ export async function GET() {
     orderBy: { categoria: "desc" },
   });
 
-  const limiteDescriptografado = limite.map((l) => ({
-    ...l,
-    limite: Number(decrypt(l.limite)),
-  }));
+const limiteDescriptografado = limite.map((l) => {
+  try {
+    return { ...l, limite: Number(decrypt(l.limite)) };
+  } catch {
+    console.error(`Falha ao descriptografar limite ${l.id}`);
+    return { ...l, limite: 0, erro: true };
+  }
+});
 
   return NextResponse.json(limiteDescriptografado);
 }
@@ -52,5 +56,8 @@ export async function POST(request: Request) {
     },
   });
 
-  return NextResponse.json(novoLimite);
+  return NextResponse.json({
+    ...novoLimite,
+    limite: Number(decrypt(novoLimite.limite)),
+  });
 }

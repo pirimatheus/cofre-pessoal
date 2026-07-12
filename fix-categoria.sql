@@ -1,0 +1,1 @@
+ALTER TABLE "LimiteOrcamento" DROP CONSTRAINT IF EXISTS "LimiteOrcamento_categoria_key";

@@ -1,13 +1,12 @@
+import PageCard from "@/components/page-card";
 import type { Transacao } from "@/types";
 
 type Props = { transacoes: Transacao[] };
 
 export default function Extrato({ transacoes }: Props) {
   return (
-    <div className="rounded-xl p-4"
+    <PageCard titulo="📋 Extrato — junho 2026" 
       style={{ background: "var(--color-background-primary)", border: "0.5px solid var(--color-border-tertiary)" }}>
-      <p className="font-semibold mb-3" style={{ fontSize: "var(--font-size-sm)", color: "var(--color-text-primary)" }}>📋 Extrato — junho 2026</p>
-
       <div className="flex flex-col gap-3">
         {transacoes.map(t => (
           <div key={t.id} className="flex items-center gap-3">
@@ -20,11 +19,11 @@ export default function Extrato({ transacoes }: Props) {
               <p style={{ fontSize: "var(--font-size-xs)", color: "var(--color-text-tertiary)" }}>{t.data}</p>
             </div>
             <p className="font-semibold" style={{ fontSize: "var(--font-size-xs)", color: t.valor >= 0 ? "#1D9E75" : "#E24B4A" }}>
-              {t.valor >= 0 ? "+" : "-"} R$ {Math.abs(t.valor)}
+              {t.valor >= 0 ? "+" : "-"} {Math.abs(t.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
             </p>
           </div>
         ))}
       </div>
-    </div>
+    </PageCard>
   );
 }

@@ -1,3 +1,7 @@
+"use client";
+
+import { Home, ClipboardList, PieChart, Target, Bell } from "lucide-react";
+
 type Page = "dashboard" | "extrato" | "orcamento" | "metas" | "alertas";
 
 type Props = {
@@ -6,32 +10,41 @@ type Props = {
 };
 
 export default function Navbar({ paginaAtual, onChange }: Props) {
-  const tabs: { id: Page; label: string; icone: string }[] = [
-    { id: "dashboard", label: "Dashboard", icone: "🏠" },
-    { id: "extrato",   label: "Extrato",   icone: "📋" },
-    { id: "orcamento", label: "Orçamento", icone: "📊" },
-    { id: "metas",     label: "Metas",     icone: "🎯" },
+  const tabs: { id: Page; Icone: typeof Home }[] = [
+    { id: "dashboard", Icone: Home },
+    { id: "extrato",   Icone: ClipboardList },
+    { id: "orcamento", Icone: PieChart },
+    { id: "metas",     Icone: Target },
+    { id: "alertas",   Icone: Bell },
   ];
 
   return (
-    <nav className="px-3 py-2 flex gap-2 overflow-x-auto"
-      style={{ background: "var(--color-background-primary)", borderBottom: "0.5px solid var(--color-border-tertiary)" }}>
-      {tabs.map(t => (
-        <button
-          key={t.id}
-          onClick={() => onChange(t.id)}
-          className="px-3 py-1.5 rounded-lg whitespace-nowrap cursor-pointer transition-all"
-          style={{
-            fontSize: "var(--font-size-xs)",
-            background: paginaAtual === t.id ? "var(--color-background-secondary)" : "transparent",
-            border: `0.5px solid ${paginaAtual === t.id ? "var(--color-border-secondary)" : "transparent"}`,
-            color: paginaAtual === t.id ? "var(--color-text-primary)" : "var(--color-text-tertiary)",
-            fontWeight: paginaAtual === t.id ? 600 : 400,
-          }}
-        >
-          {t.icone} {t.label}
-        </button>
-      ))}
+    <nav
+      className="fixed bottom-0 left-0 right-0 flex justify-around items-center px-2 max-w-2xl lg:max-w-5xl mx-auto"
+      style={{
+        height: 56,
+        background: "var(--color-background-primary)",
+        borderTop: "0.5px solid var(--color-border-tertiary)",
+        zIndex: "var(--z-navbar)" as unknown as number,
+      }}
+    >
+      {tabs.map(({ id, Icone }) => {
+        const ativo = paginaAtual === id;
+        return (
+          <button
+            key={id}
+            onClick={() => onChange(id)}
+            className="flex-1 h-full flex items-center justify-center cursor-pointer bg-transparent border-none"
+            style={{ transition: "all var(--duration-fast) var(--ease-padrao)" }}
+          >
+            <Icone
+              size={24}
+              strokeWidth={ativo ? 2.4 : 1.8}
+              color={ativo ? "var(--color-accent)" : "var(--color-text-tertiary)"}
+            />
+          </button>
+        );
+      })}
     </nav>
   );
 }

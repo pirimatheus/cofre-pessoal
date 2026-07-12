@@ -17,11 +17,18 @@ export async function GET() {
     orderBy: { dataCriacao: "desc" },
   });
 
-  const metaDescriptografada = meta.map((m) => ({
-    ...m,
-    valorAtual: Number(decrypt(m.valorAtual)),
-    valorObjetivo: Number(decrypt(m.valorObjetivo)),
-  }));
+const metaDescriptografada = meta.map((m) => {
+  try {
+    return {
+      ...m,
+      valorAtual: Number(decrypt(m.valorAtual)),
+      valorObjetivo: Number(decrypt(m.valorObjetivo)),
+    };
+  } catch {
+    console.error(`Falha ao descriptografar meta ${m.id}`);
+    return { ...m, valorAtual: 0, valorObjetivo: 0, erro: true };
+  }
+});
 
   return NextResponse.json(metaDescriptografada);
 }
@@ -56,5 +63,9 @@ export async function POST(request: Request) {
     },
   });
 
-  return NextResponse.json(novaMeta);
+  return NextResponse.json({
+    ...novaMeta,
+    valorAtual: Number(decrypt(novaMeta.valorAtual)),
+    valorObjetivo: Number(decrypt(novaMeta.valorObjetivo)),
+  });
 }

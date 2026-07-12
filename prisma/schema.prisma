@@ -42,13 +42,64 @@ model Meta {
 }
 
 model LimiteOrcamento {
-  id       Int    @id @default(autoincrement())
-  categoria String @unique
-  limite   String
-  cor      String
-  userId   String
+  id        Int    @id @default(autoincrement())
+  categoria String
+  limite    String
+  cor       String
+  userId    String
 
   @@unique([categoria, userId])
+  @@index([userId])
+}
+
+model UsuarioPin {
+  id             Int       @id @default(autoincrement())
+  userId         String    @unique
+  pinHash        String
+  tentativas     Int       @default(0)
+  bloqueadoAte   DateTime?
+  criadoEm       DateTime  @default(now())
+}
+
+model DispositivoConfiavel {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  tokenHash String
+  criadoEm  DateTime @default(now())
+  expiraEm  DateTime
+
+  @@index([userId])
+}
+
+model LogLogin {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  ip        String?
+  sucesso   Boolean
+  criadoEm  DateTime @default(now())
+
+  @@index([userId])
+}
+
+model ConsentimentoUsuario {
+  id        Int      @id @default(autoincrement())
+  userId    String   @unique
+  aceitoEm  DateTime @default(now())
+}
+
+model LayoutDashboard {
+  id      Int      @id @default(autoincrement())
+  userId  String   @unique
+  ordem   String[] // array de ids dos widgets, na ordem escolhida
+}
+
+model Notificacao {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  mensagem  String
+  lida      Boolean  @default(false)
+  criadoEm  DateTime @default(now())
+
   @@index([userId])
 }
 

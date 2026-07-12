@@ -39,14 +39,18 @@
 }
 
 * {
+  -webkit-tap-highlight-color: transparent;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-body {
+html, body {
+  overflow-x: hidden;
   font-family: var(--font-family);
   background: var(--color-background-tertiary);
   color: var(--color-text-primary);
+  -webkit-tap-highlight-color: transparent;
 }
+
 
 /* Efeito flutuante nos cards */
 .card {
@@ -69,4 +73,70 @@ button {
 
 button:active {
   transform: scale(0.97);
+}
+
+/* ============================================
+   DESIGN TOKENS — Fase 5
+   Vocabulário visual único do app.
+   Qualquer componente novo deve usar essas
+   variáveis em vez de valores soltos (ex: nunca
+   escrever "16px" direto, usar var(--space-md)).
+   ============================================ */
+
+:root {
+  /* Espaçamento — escala consistente (múltiplos de 4px) */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+
+  /* Raio de borda — do mais quadrado ao mais redondo */
+  --radius-sm:  8px;
+  --radius-md:  14px;   /* mesmo valor que .card já usa hoje */
+  --radius-lg:  20px;
+  --radius-full: 999px; /* círculos/pills */
+
+  /* Sombras — 3 níveis de profundidade */
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 32px rgba(124,58,237,0.12), 0 2px 8px rgba(0,0,0,0.06);
+
+  /* Animação — durações e curva padrão */
+  --duration-fast:   0.15s;
+  --duration-normal: 0.2s;
+  --duration-slow:   0.35s;
+  --ease-padrao: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Camadas — evita conflito de z-index "no chute" */
+  --z-base:     1;
+  --z-widget:   10;
+  --z-navbar:   20;
+  --z-modal:    50;
+  --z-chat:     60;
+  --z-overlay:  70;
+}
+
+/* Tokens semânticos pro sistema de widgets (Fase 5.4) */
+:root {
+  --widget-background: var(--color-background-primary);
+  --widget-border: 0.5px solid var(--color-border-tertiary);
+  --widget-radius: var(--radius-md);
+  --widget-shadow: var(--shadow-md);
+  --widget-gap: var(--space-md);
+}
+
+@keyframes entrada-pagina {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Respeita quem pediu "reduzir movimento" no sistema operacional */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

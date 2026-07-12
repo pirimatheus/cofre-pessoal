@@ -51,7 +51,13 @@ export const AnyNull = runtime.objectEnumValues.instances.AnyNull
 export const ModelName = {
   Transacao: 'Transacao',
   Meta: 'Meta',
-  LimiteOrcamento: 'LimiteOrcamento'
+  LimiteOrcamento: 'LimiteOrcamento',
+  UsuarioPin: 'UsuarioPin',
+  DispositivoConfiavel: 'DispositivoConfiavel',
+  LogLogin: 'LogLogin',
+  ConsentimentoUsuario: 'ConsentimentoUsuario',
+  LayoutDashboard: 'LayoutDashboard',
+  Notificacao: 'Notificacao'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -108,6 +114,69 @@ export const LimiteOrcamentoScalarFieldEnum = {
 } as const
 
 export type LimiteOrcamentoScalarFieldEnum = (typeof LimiteOrcamentoScalarFieldEnum)[keyof typeof LimiteOrcamentoScalarFieldEnum]
+
+
+export const UsuarioPinScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  pinHash: 'pinHash',
+  tentativas: 'tentativas',
+  bloqueadoAte: 'bloqueadoAte',
+  criadoEm: 'criadoEm'
+} as const
+
+export type UsuarioPinScalarFieldEnum = (typeof UsuarioPinScalarFieldEnum)[keyof typeof UsuarioPinScalarFieldEnum]
+
+
+export const DispositivoConfiavelScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tokenHash: 'tokenHash',
+  criadoEm: 'criadoEm',
+  expiraEm: 'expiraEm'
+} as const
+
+export type DispositivoConfiavelScalarFieldEnum = (typeof DispositivoConfiavelScalarFieldEnum)[keyof typeof DispositivoConfiavelScalarFieldEnum]
+
+
+export const LogLoginScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  ip: 'ip',
+  sucesso: 'sucesso',
+  criadoEm: 'criadoEm'
+} as const
+
+export type LogLoginScalarFieldEnum = (typeof LogLoginScalarFieldEnum)[keyof typeof LogLoginScalarFieldEnum]
+
+
+export const ConsentimentoUsuarioScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  aceitoEm: 'aceitoEm'
+} as const
+
+export type ConsentimentoUsuarioScalarFieldEnum = (typeof ConsentimentoUsuarioScalarFieldEnum)[keyof typeof ConsentimentoUsuarioScalarFieldEnum]
+
+
+export const LayoutDashboardScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  ordem: 'ordem'
+} as const
+
+export type LayoutDashboardScalarFieldEnum = (typeof LayoutDashboardScalarFieldEnum)[keyof typeof LayoutDashboardScalarFieldEnum]
+
+
+export const NotificacaoScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mensagem: 'mensagem',
+  lida: 'lida',
+  criadoEm: 'criadoEm'
+} as const
+
+export type NotificacaoScalarFieldEnum = (typeof NotificacaoScalarFieldEnum)[keyof typeof NotificacaoScalarFieldEnum]
 
 
 export const SortOrder = {

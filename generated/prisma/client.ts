@@ -59,3 +59,33 @@ export type Meta = Prisma.MetaModel
  * 
  */
 export type LimiteOrcamento = Prisma.LimiteOrcamentoModel
+/**
+ * Model UsuarioPin
+ * 
+ */
+export type UsuarioPin = Prisma.UsuarioPinModel
+/**
+ * Model DispositivoConfiavel
+ * 
+ */
+export type DispositivoConfiavel = Prisma.DispositivoConfiavelModel
+/**
+ * Model LogLogin
+ * 
+ */
+export type LogLogin = Prisma.LogLoginModel
+/**
+ * Model ConsentimentoUsuario
+ * 
+ */
+export type ConsentimentoUsuario = Prisma.ConsentimentoUsuarioModel
+/**
+ * Model LayoutDashboard
+ * 
+ */
+export type LayoutDashboard = Prisma.LayoutDashboardModel
+/**
+ * Model Notificacao
+ * 
+ */
+export type Notificacao = Prisma.NotificacaoModel

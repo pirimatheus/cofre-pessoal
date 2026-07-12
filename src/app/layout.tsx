@@ -19,6 +19,13 @@ export const metadata: Metadata = {
   description: "App de controle financeiro",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: "#7c3aed",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

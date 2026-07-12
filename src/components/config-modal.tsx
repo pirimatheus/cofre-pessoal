@@ -1,6 +1,8 @@
 "use client";
 
 import { useConfig } from "@/context/config-context";
+import { useState } from "react";
+import { createClient } from "@/utils/supabase/client";
 
 type Props = { onClose: () => void };
 
@@ -8,6 +10,23 @@ const FONTES = ["Inter", "DM Sans", "Nunito", "Poppins", "Plus Jakarta Sans", "O
 
 export default function ConfigModal({ onClose }: Props) {
   const { tema, setTema, fonte, setFonte, fonteFamilia, setFonteFamilia } = useConfig();
+  const [confirmando, setConfirmando] = useState(false);
+  const [textoConfirmacao, setTextoConfirmacao] = useState("");
+  const [excluindo, setExcluindo] = useState(false);
+
+  const excluirConta = async () => {
+    setExcluindo(true);
+    const res = await fetch("/api/conta", { method: "DELETE" });
+
+    if (res.ok) {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      window.location.href = "/login";
+    } else {
+      setExcluindo(false);
+      alert("Não foi possível excluir sua conta. Tente novamente.");
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
@@ -62,6 +81,70 @@ export default function ConfigModal({ onClose }: Props) {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Zona de risco */}
+        <div className="pt-2" style={{ borderTop: "0.5px solid var(--color-border-tertiary)" }}>
+          <p className="mb-2 mt-3" style={{ color: "#E24B4A", fontSize: "var(--font-size-xs)", fontWeight: 600 }}>
+            Zona de risco
+          </p>
+
+          {!confirmando ? (
+            <button
+              onClick={() => setConfirmando(true)}
+              className="w-full py-2 rounded-lg cursor-pointer"
+              style={{
+                background: "transparent",
+                border: "1px solid #E24B4A",
+                color: "#E24B4A",
+                fontSize: "var(--font-size-sm)",
+                fontWeight: 500,
+              }}
+            >
+              Excluir minha conta
+            </button>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-xs)" }}>
+                Essa ação apaga todos os seus dados (transações, metas, limites) e não pode ser desfeita.
+                Digite <strong>EXCLUIR</strong> para confirmar.
+              </p>
+              <input
+                value={textoConfirmacao}
+                onChange={(e) => setTextoConfirmacao(e.target.value)}
+                className="rounded-lg px-3 py-2 outline-none"
+                style={{
+                  background: "var(--color-background-secondary)",
+                  border: "1px solid var(--color-border-primary)",
+                  color: "var(--color-text-primary)",
+                  fontSize: "var(--font-size-sm)",
+                }}
+              />
+              <div className="flex gap-2">
+                <button
+                  onClick={() => { setConfirmando(false); setTextoConfirmacao(""); }}
+                  className="flex-1 py-2 rounded-lg cursor-pointer"
+                  style={{ background: "var(--color-background-secondary)", border: "1px solid var(--color-border-primary)", color: "var(--color-text-primary)", fontSize: "var(--font-size-sm)" }}
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={excluirConta}
+                  disabled={textoConfirmacao !== "EXCLUIR" || excluindo}
+                  className="flex-1 py-2 rounded-lg cursor-pointer"
+                  style={{
+                    background: textoConfirmacao === "EXCLUIR" ? "#E24B4A" : "var(--color-border-primary)",
+                    border: "none",
+                    color: "#fff",
+                    fontSize: "var(--font-size-sm)",
+                    opacity: excluindo ? 0.6 : 1,
+                  }}
+                >
+                  {excluindo ? "Excluindo..." : "Confirmar exclusão"}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
       </div>

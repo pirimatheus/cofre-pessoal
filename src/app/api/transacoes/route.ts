@@ -17,10 +17,14 @@ export async function GET() {
     orderBy: { data: "desc" },
   });
 
-  const transacoesDescriptografadas = transacoes.map((t) => ({
-    ...t,
-    valor: Number(decrypt(t.valor)),
-  }));
+const transacoesDescriptografadas = transacoes.map((t) => {
+  try {
+    return { ...t, valor: Number(decrypt(t.valor)) };
+  } catch {
+    console.error(`Falha ao descriptografar transação ${t.id}`);
+    return { ...t, valor: 0, erro: true };
+  }
+});
 
   return NextResponse.json(transacoesDescriptografadas);
 }
@@ -55,5 +59,8 @@ export async function POST(request: Request) {
     },
   });
 
-  return NextResponse.json(novaTransacao);
+  return NextResponse.json({
+    ...novaTransacao,
+    valor: Number(decrypt(novaTransacao.valor)),
+  });
 }

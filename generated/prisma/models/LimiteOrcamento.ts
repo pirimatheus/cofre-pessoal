@@ -228,15 +228,15 @@ export type LimiteOrcamentoOrderByWithRelationInput = {
 
 export type LimiteOrcamentoWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  categoria?: string
   categoria_userId?: Prisma.LimiteOrcamentoCategoriaUserIdCompoundUniqueInput
   AND?: Prisma.LimiteOrcamentoWhereInput | Prisma.LimiteOrcamentoWhereInput[]
   OR?: Prisma.LimiteOrcamentoWhereInput[]
   NOT?: Prisma.LimiteOrcamentoWhereInput | Prisma.LimiteOrcamentoWhereInput[]
+  categoria?: Prisma.StringFilter<"LimiteOrcamento"> | string
   limite?: Prisma.StringFilter<"LimiteOrcamento"> | string
   cor?: Prisma.StringFilter<"LimiteOrcamento"> | string
   userId?: Prisma.StringFilter<"LimiteOrcamento"> | string
-}, "id" | "categoria" | "categoria_userId">
+}, "id" | "categoria_userId">
 
 export type LimiteOrcamentoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

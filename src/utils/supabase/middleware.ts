@@ -34,16 +34,21 @@ export async function updateSession(request: NextRequest) {
     return supabaseResponse;
   }
 
-  // Protege rotas: redireciona pra login se não houver usuário
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth")
-  ) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
-  }
+  // Rotas de API: retorna 401 JSON, não redireciona (senão quebra o fetch() no client)
+if (!user && request.nextUrl.pathname.startsWith("/api")) {
+  return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
+}
 
-  return supabaseResponse;
+// Páginas: redireciona pra login se não houver usuário
+if (
+  !user &&
+  !request.nextUrl.pathname.startsWith("/login") &&
+  !request.nextUrl.pathname.startsWith("/auth")
+) {
+  const url = request.nextUrl.clone();
+  url.pathname = "/login";
+  return NextResponse.redirect(url);
+}
+
+return supabaseResponse;
 }
