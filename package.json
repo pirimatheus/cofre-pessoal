@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
@@ -39,4 +40,7 @@
     "eslint-config-next": "16.2.9",
     "typescript": "^5"
   }
+ 
 }
+
+
