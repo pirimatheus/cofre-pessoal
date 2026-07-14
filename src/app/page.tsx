@@ -2,11 +2,11 @@
 
 import Topbar from "@/components/topbar";
 import Navbar from "@/components/navbar";
-import Dashboard from "@/pages/dashboard";
-import Extrato from "@/pages/extrato";
-import Orcamento from "@/pages/orcamento";
-import Metas from "@/pages/metas";
-import Alertas from "@/pages/alertas";
+import Dashboard from "@/telas/dashboard";
+import Extrato from "@/telas/extrato";
+import Orcamento from "@/telas/orcamento";
+import Metas from "@/telas/metas";
+import Alertas from "@/telas/alertas";
 import type { Transacao, Meta, LimiteOrcamento } from "@/types";
 import ConfigModal from "@/components/config-modal";
 import LoadingOverlay from "@/components/loading-overlay";

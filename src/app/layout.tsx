@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ConfigProvider } from "@/context/config-context";
 import IAChat from "@/components/ia-chat";
+import { RegisterSW } from "@/components/register-sw";
+import { InstallBanner } from "@/components/install-banner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,6 +19,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Cofre Pessoal",
   description: "App de controle financeiro",
+  manifest: "/manifest.json",
+  themeColor: "#0f0f0f",
 };
 
 export const viewport = {
@@ -37,6 +41,8 @@ export default function RootLayout({
         <ConfigProvider>
           {children}
           <IAChat />
+          <RegisterSW />
+          <InstallBanner />
         </ConfigProvider>
       </body>
     </html>

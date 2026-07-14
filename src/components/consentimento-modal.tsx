@@ -41,10 +41,10 @@ export default function ConsentimentoModal({ onAceitar }: Props) {
         </p>
 
         
-          href="/privacidade"
+        <a href="/privacidade"
           target="_blank"
           rel="noopener noreferrer"
-          <a style={{ 
+           style={{ 
             fontSize: "var(--font-size-xs)", 
             color: "var(--color-accent)" 
             }}
