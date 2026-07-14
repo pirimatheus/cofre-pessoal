@@ -7,10 +7,7 @@ const withSerwist = withSerwistInit({
 });
 
 const nextConfig: NextConfig = {
-  outputFileTracingIncludes: {
-    "/api/**/*": ["./generated/prisma/**/*"],
-    "app/api/**/*": ["./generated/prisma/**/*"],
-  },
+  /* config options here */
 };
 
 export default withSerwist(nextConfig);

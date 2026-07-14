@@ -10,8 +10,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -29,7 +29,7 @@ model Transacao {
 }
 
 model Meta {
-  id            Int      @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   nome          String
   valorAtual    String
   valorObjetivo String
@@ -54,12 +54,12 @@ model LimiteOrcamento {
 }
 
 model UsuarioPin {
-  id             Int       @id @default(autoincrement())
-  userId         String    @unique
-  pinHash        String
-  tentativas     Int       @default(0)
-  bloqueadoAte   DateTime?
-  criadoEm       DateTime  @default(now())
+  id           Int       @id @default(autoincrement())
+  userId       String    @unique
+  pinHash      String
+  tentativas   Int       @default(0)
+  bloqueadoAte DateTime?
+  criadoEm     DateTime  @default(now())
 }
 
 model DispositivoConfiavel {
@@ -73,34 +73,33 @@ model DispositivoConfiavel {
 }
 
 model LogLogin {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  ip        String?
-  sucesso   Boolean
-  criadoEm  DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  userId   String
+  ip       String?
+  sucesso  Boolean
+  criadoEm DateTime @default(now())
 
   @@index([userId])
 }
 
 model ConsentimentoUsuario {
-  id        Int      @id @default(autoincrement())
-  userId    String   @unique
-  aceitoEm  DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  userId   String   @unique
+  aceitoEm DateTime @default(now())
 }
 
 model LayoutDashboard {
-  id      Int      @id @default(autoincrement())
-  userId  String   @unique
-  ordem   String[] // array de ids dos widgets, na ordem escolhida
+  id     Int      @id @default(autoincrement())
+  userId String   @unique
+  ordem  String[] // array de ids dos widgets, na ordem escolhida
 }
 
 model Notificacao {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  mensagem  String
-  lida      Boolean  @default(false)
-  criadoEm  DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  userId   String
+  mensagem String
+  lida     Boolean  @default(false)
+  criadoEm DateTime @default(now())
 
   @@index([userId])
 }
-
