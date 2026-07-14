@@ -6,11 +6,11 @@ const withSerwist = withSerwistInit({
   swDest: "public/sw.js",
 });
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/api/**/*": ["./generated/prisma/**/*"],
+    "app/api/**/*": ["./generated/prisma/**/*"],
   },
-  // suas outras configs...
 };
 
 export default withSerwist(nextConfig);
