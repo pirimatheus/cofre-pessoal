@@ -1,5 +1,6 @@
 "use client";
 
+import { usePushNotifications } from "@/hooks/use-push-notifications";
 import { useConfig } from "@/context/config-context";
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -13,6 +14,7 @@ export default function ConfigModal({ onClose }: Props) {
   const [confirmando, setConfirmando] = useState(false);
   const [textoConfirmacao, setTextoConfirmacao] = useState("");
   const [excluindo, setExcluindo] = useState(false);
+  const { permitido, ativarNotificacoes } = usePushNotifications();
 
   const excluirConta = async () => {
     setExcluindo(true);
@@ -82,7 +84,16 @@ export default function ConfigModal({ onClose }: Props) {
             ))}
           </div>
         </div>
-
+        {/* Notificações */}
+        <div className="pt-2" style={{ borderTop: "0.5px solid var(--color-border-tertiary)" }}>
+          <button
+            onClick={ativarNotificacoes}
+            className="px-3 py-2 rounded-lg font-medium"
+            style={{ background: "#FF6B1A", color: "#FFFFFF", fontSize: "var(--font-size-sm)" }}
+          >
+            Ativar notificações
+          </button>
+        </div>
         {/* Zona de risco */}
         <div className="pt-2" style={{ borderTop: "0.5px solid var(--color-border-tertiary)" }}>
           <p className="mb-2 mt-3" style={{ color: "#E24B4A", fontSize: "var(--font-size-xs)", fontWeight: 600 }}>

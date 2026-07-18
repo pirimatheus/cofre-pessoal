@@ -197,6 +197,15 @@ exports.Prisma.NotificacaoScalarFieldEnum = {
   criadoEm: 'criadoEm'
 };
 
+exports.Prisma.PushSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  endpoint: 'endpoint',
+  p256dh: 'p256dh',
+  auth: 'auth',
+  criadoEm: 'criadoEm'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -222,7 +231,8 @@ exports.Prisma.ModelName = {
   LogLogin: 'LogLogin',
   ConsentimentoUsuario: 'ConsentimentoUsuario',
   LayoutDashboard: 'LayoutDashboard',
-  Notificacao: 'Notificacao'
+  Notificacao: 'Notificacao',
+  PushSubscription: 'PushSubscription'
 };
 
 /**

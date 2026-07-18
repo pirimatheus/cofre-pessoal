@@ -29,4 +29,14 @@ const serwist = new Serwist({
   },
 });
 
+self.addEventListener("push", (event) => {
+  const dados = event.data?.json() ?? {};
+  event.waitUntil(
+    self.registration.showNotification(dados.titulo || "Cofre Pessoal", {
+      body: dados.corpo || "",
+      icon: "/icons/icon-192.png",
+    })
+  );
+});
+
 serwist.addEventListeners();

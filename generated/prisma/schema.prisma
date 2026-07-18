@@ -103,3 +103,14 @@ model Notificacao {
 
   @@index([userId])
 }
+
+model PushSubscription {
+  id       Int      @id @default(autoincrement())
+  userId   String
+  endpoint String   @unique
+  p256dh   String
+  auth     String
+  criadoEm DateTime @default(now())
+
+  @@index([userId])
+}
