@@ -63,6 +63,11 @@ export type Notificacao = $Result.DefaultSelection<Prisma.$NotificacaoPayload>
  * 
  */
 export type PushSubscription = $Result.DefaultSelection<Prisma.$PushSubscriptionPayload>
+/**
+ * Model Conta
+ * 
+ */
+export type Conta = $Result.DefaultSelection<Prisma.$ContaPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -281,6 +286,16 @@ export class PrismaClient<
     * ```
     */
   get pushSubscription(): Prisma.PushSubscriptionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.conta`: Exposes CRUD operations for the **Conta** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Contas
+    * const contas = await prisma.conta.findMany()
+    * ```
+    */
+  get conta(): Prisma.ContaDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -731,7 +746,8 @@ export namespace Prisma {
     ConsentimentoUsuario: 'ConsentimentoUsuario',
     LayoutDashboard: 'LayoutDashboard',
     Notificacao: 'Notificacao',
-    PushSubscription: 'PushSubscription'
+    PushSubscription: 'PushSubscription',
+    Conta: 'Conta'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -750,7 +766,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "transacao" | "meta" | "limiteOrcamento" | "usuarioPin" | "dispositivoConfiavel" | "logLogin" | "consentimentoUsuario" | "layoutDashboard" | "notificacao" | "pushSubscription"
+      modelProps: "transacao" | "meta" | "limiteOrcamento" | "usuarioPin" | "dispositivoConfiavel" | "logLogin" | "consentimentoUsuario" | "layoutDashboard" | "notificacao" | "pushSubscription" | "conta"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1494,6 +1510,80 @@ export namespace Prisma {
           }
         }
       }
+      Conta: {
+        payload: Prisma.$ContaPayload<ExtArgs>
+        fields: Prisma.ContaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ContaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ContaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContaPayload>
+          }
+          findFirst: {
+            args: Prisma.ContaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ContaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContaPayload>
+          }
+          findMany: {
+            args: Prisma.ContaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContaPayload>[]
+          }
+          create: {
+            args: Prisma.ContaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContaPayload>
+          }
+          createMany: {
+            args: Prisma.ContaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ContaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContaPayload>[]
+          }
+          delete: {
+            args: Prisma.ContaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContaPayload>
+          }
+          update: {
+            args: Prisma.ContaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContaPayload>
+          }
+          deleteMany: {
+            args: Prisma.ContaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ContaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ContaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContaPayload>[]
+          }
+          upsert: {
+            args: Prisma.ContaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContaPayload>
+          }
+          aggregate: {
+            args: Prisma.ContaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateConta>
+          }
+          groupBy: {
+            args: Prisma.ContaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ContaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ContaCountArgs<ExtArgs>
+            result: $Utils.Optional<ContaCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1600,6 +1690,7 @@ export namespace Prisma {
     layoutDashboard?: LayoutDashboardOmit
     notificacao?: NotificacaoOmit
     pushSubscription?: PushSubscriptionOmit
+    conta?: ContaOmit
   }
 
   /* Types for Logging */
@@ -1709,6 +1800,7 @@ export namespace Prisma {
     icone: string | null
     cor: string | null
     userId: string | null
+    pluggyTransactionId: string | null
   }
 
   export type TransacaoMaxAggregateOutputType = {
@@ -1720,6 +1812,7 @@ export namespace Prisma {
     icone: string | null
     cor: string | null
     userId: string | null
+    pluggyTransactionId: string | null
   }
 
   export type TransacaoCountAggregateOutputType = {
@@ -1731,6 +1824,7 @@ export namespace Prisma {
     icone: number
     cor: number
     userId: number
+    pluggyTransactionId: number
     _all: number
   }
 
@@ -1752,6 +1846,7 @@ export namespace Prisma {
     icone?: true
     cor?: true
     userId?: true
+    pluggyTransactionId?: true
   }
 
   export type TransacaoMaxAggregateInputType = {
@@ -1763,6 +1858,7 @@ export namespace Prisma {
     icone?: true
     cor?: true
     userId?: true
+    pluggyTransactionId?: true
   }
 
   export type TransacaoCountAggregateInputType = {
@@ -1774,6 +1870,7 @@ export namespace Prisma {
     icone?: true
     cor?: true
     userId?: true
+    pluggyTransactionId?: true
     _all?: true
   }
 
@@ -1872,6 +1969,7 @@ export namespace Prisma {
     icone: string
     cor: string
     userId: string
+    pluggyTransactionId: string | null
     _count: TransacaoCountAggregateOutputType | null
     _avg: TransacaoAvgAggregateOutputType | null
     _sum: TransacaoSumAggregateOutputType | null
@@ -1902,6 +2000,7 @@ export namespace Prisma {
     icone?: boolean
     cor?: boolean
     userId?: boolean
+    pluggyTransactionId?: boolean
   }, ExtArgs["result"]["transacao"]>
 
   export type TransacaoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1913,6 +2012,7 @@ export namespace Prisma {
     icone?: boolean
     cor?: boolean
     userId?: boolean
+    pluggyTransactionId?: boolean
   }, ExtArgs["result"]["transacao"]>
 
   export type TransacaoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1924,6 +2024,7 @@ export namespace Prisma {
     icone?: boolean
     cor?: boolean
     userId?: boolean
+    pluggyTransactionId?: boolean
   }, ExtArgs["result"]["transacao"]>
 
   export type TransacaoSelectScalar = {
@@ -1935,9 +2036,10 @@ export namespace Prisma {
     icone?: boolean
     cor?: boolean
     userId?: boolean
+    pluggyTransactionId?: boolean
   }
 
-  export type TransacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "data" | "tipo" | "valor" | "icone" | "cor" | "userId", ExtArgs["result"]["transacao"]>
+  export type TransacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "data" | "tipo" | "valor" | "icone" | "cor" | "userId" | "pluggyTransactionId", ExtArgs["result"]["transacao"]>
 
   export type $TransacaoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Transacao"
@@ -1951,6 +2053,7 @@ export namespace Prisma {
       icone: string
       cor: string
       userId: string
+      pluggyTransactionId: string | null
     }, ExtArgs["result"]["transacao"]>
     composites: {}
   }
@@ -2382,6 +2485,7 @@ export namespace Prisma {
     readonly icone: FieldRef<"Transacao", 'String'>
     readonly cor: FieldRef<"Transacao", 'String'>
     readonly userId: FieldRef<"Transacao", 'String'>
+    readonly pluggyTransactionId: FieldRef<"Transacao", 'String'>
   }
     
 
@@ -12036,6 +12140,1087 @@ export namespace Prisma {
 
 
   /**
+   * Model Conta
+   */
+
+  export type AggregateConta = {
+    _count: ContaCountAggregateOutputType | null
+    _avg: ContaAvgAggregateOutputType | null
+    _sum: ContaSumAggregateOutputType | null
+    _min: ContaMinAggregateOutputType | null
+    _max: ContaMaxAggregateOutputType | null
+  }
+
+  export type ContaAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ContaSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ContaMinAggregateOutputType = {
+    id: number | null
+    userId: string | null
+    itemId: string | null
+    contaId: string | null
+    instituicao: string | null
+    tipo: string | null
+    saldo: string | null
+    ultimaSync: Date | null
+    criadoEm: Date | null
+  }
+
+  export type ContaMaxAggregateOutputType = {
+    id: number | null
+    userId: string | null
+    itemId: string | null
+    contaId: string | null
+    instituicao: string | null
+    tipo: string | null
+    saldo: string | null
+    ultimaSync: Date | null
+    criadoEm: Date | null
+  }
+
+  export type ContaCountAggregateOutputType = {
+    id: number
+    userId: number
+    itemId: number
+    contaId: number
+    instituicao: number
+    tipo: number
+    saldo: number
+    ultimaSync: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type ContaAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type ContaSumAggregateInputType = {
+    id?: true
+  }
+
+  export type ContaMinAggregateInputType = {
+    id?: true
+    userId?: true
+    itemId?: true
+    contaId?: true
+    instituicao?: true
+    tipo?: true
+    saldo?: true
+    ultimaSync?: true
+    criadoEm?: true
+  }
+
+  export type ContaMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    itemId?: true
+    contaId?: true
+    instituicao?: true
+    tipo?: true
+    saldo?: true
+    ultimaSync?: true
+    criadoEm?: true
+  }
+
+  export type ContaCountAggregateInputType = {
+    id?: true
+    userId?: true
+    itemId?: true
+    contaId?: true
+    instituicao?: true
+    tipo?: true
+    saldo?: true
+    ultimaSync?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type ContaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Conta to aggregate.
+     */
+    where?: ContaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Contas to fetch.
+     */
+    orderBy?: ContaOrderByWithRelationInput | ContaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ContaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Contas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Contas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Contas
+    **/
+    _count?: true | ContaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ContaAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ContaSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ContaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ContaMaxAggregateInputType
+  }
+
+  export type GetContaAggregateType<T extends ContaAggregateArgs> = {
+        [P in keyof T & keyof AggregateConta]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConta[P]>
+      : GetScalarType<T[P], AggregateConta[P]>
+  }
+
+
+
+
+  export type ContaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContaWhereInput
+    orderBy?: ContaOrderByWithAggregationInput | ContaOrderByWithAggregationInput[]
+    by: ContaScalarFieldEnum[] | ContaScalarFieldEnum
+    having?: ContaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ContaCountAggregateInputType | true
+    _avg?: ContaAvgAggregateInputType
+    _sum?: ContaSumAggregateInputType
+    _min?: ContaMinAggregateInputType
+    _max?: ContaMaxAggregateInputType
+  }
+
+  export type ContaGroupByOutputType = {
+    id: number
+    userId: string
+    itemId: string
+    contaId: string
+    instituicao: string
+    tipo: string
+    saldo: string
+    ultimaSync: Date
+    criadoEm: Date
+    _count: ContaCountAggregateOutputType | null
+    _avg: ContaAvgAggregateOutputType | null
+    _sum: ContaSumAggregateOutputType | null
+    _min: ContaMinAggregateOutputType | null
+    _max: ContaMaxAggregateOutputType | null
+  }
+
+  type GetContaGroupByPayload<T extends ContaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ContaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ContaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ContaGroupByOutputType[P]>
+            : GetScalarType<T[P], ContaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ContaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    itemId?: boolean
+    contaId?: boolean
+    instituicao?: boolean
+    tipo?: boolean
+    saldo?: boolean
+    ultimaSync?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["conta"]>
+
+  export type ContaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    itemId?: boolean
+    contaId?: boolean
+    instituicao?: boolean
+    tipo?: boolean
+    saldo?: boolean
+    ultimaSync?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["conta"]>
+
+  export type ContaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    itemId?: boolean
+    contaId?: boolean
+    instituicao?: boolean
+    tipo?: boolean
+    saldo?: boolean
+    ultimaSync?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["conta"]>
+
+  export type ContaSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    itemId?: boolean
+    contaId?: boolean
+    instituicao?: boolean
+    tipo?: boolean
+    saldo?: boolean
+    ultimaSync?: boolean
+    criadoEm?: boolean
+  }
+
+  export type ContaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "itemId" | "contaId" | "instituicao" | "tipo" | "saldo" | "ultimaSync" | "criadoEm", ExtArgs["result"]["conta"]>
+
+  export type $ContaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Conta"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      userId: string
+      itemId: string
+      contaId: string
+      instituicao: string
+      tipo: string
+      saldo: string
+      ultimaSync: Date
+      criadoEm: Date
+    }, ExtArgs["result"]["conta"]>
+    composites: {}
+  }
+
+  type ContaGetPayload<S extends boolean | null | undefined | ContaDefaultArgs> = $Result.GetResult<Prisma.$ContaPayload, S>
+
+  type ContaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ContaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ContaCountAggregateInputType | true
+    }
+
+  export interface ContaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Conta'], meta: { name: 'Conta' } }
+    /**
+     * Find zero or one Conta that matches the filter.
+     * @param {ContaFindUniqueArgs} args - Arguments to find a Conta
+     * @example
+     * // Get one Conta
+     * const conta = await prisma.conta.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ContaFindUniqueArgs>(args: SelectSubset<T, ContaFindUniqueArgs<ExtArgs>>): Prisma__ContaClient<$Result.GetResult<Prisma.$ContaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Conta that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ContaFindUniqueOrThrowArgs} args - Arguments to find a Conta
+     * @example
+     * // Get one Conta
+     * const conta = await prisma.conta.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ContaFindUniqueOrThrowArgs>(args: SelectSubset<T, ContaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ContaClient<$Result.GetResult<Prisma.$ContaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Conta that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContaFindFirstArgs} args - Arguments to find a Conta
+     * @example
+     * // Get one Conta
+     * const conta = await prisma.conta.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ContaFindFirstArgs>(args?: SelectSubset<T, ContaFindFirstArgs<ExtArgs>>): Prisma__ContaClient<$Result.GetResult<Prisma.$ContaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Conta that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContaFindFirstOrThrowArgs} args - Arguments to find a Conta
+     * @example
+     * // Get one Conta
+     * const conta = await prisma.conta.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ContaFindFirstOrThrowArgs>(args?: SelectSubset<T, ContaFindFirstOrThrowArgs<ExtArgs>>): Prisma__ContaClient<$Result.GetResult<Prisma.$ContaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Contas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Contas
+     * const contas = await prisma.conta.findMany()
+     * 
+     * // Get first 10 Contas
+     * const contas = await prisma.conta.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const contaWithIdOnly = await prisma.conta.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ContaFindManyArgs>(args?: SelectSubset<T, ContaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Conta.
+     * @param {ContaCreateArgs} args - Arguments to create a Conta.
+     * @example
+     * // Create one Conta
+     * const Conta = await prisma.conta.create({
+     *   data: {
+     *     // ... data to create a Conta
+     *   }
+     * })
+     * 
+     */
+    create<T extends ContaCreateArgs>(args: SelectSubset<T, ContaCreateArgs<ExtArgs>>): Prisma__ContaClient<$Result.GetResult<Prisma.$ContaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Contas.
+     * @param {ContaCreateManyArgs} args - Arguments to create many Contas.
+     * @example
+     * // Create many Contas
+     * const conta = await prisma.conta.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ContaCreateManyArgs>(args?: SelectSubset<T, ContaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Contas and returns the data saved in the database.
+     * @param {ContaCreateManyAndReturnArgs} args - Arguments to create many Contas.
+     * @example
+     * // Create many Contas
+     * const conta = await prisma.conta.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Contas and only return the `id`
+     * const contaWithIdOnly = await prisma.conta.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ContaCreateManyAndReturnArgs>(args?: SelectSubset<T, ContaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Conta.
+     * @param {ContaDeleteArgs} args - Arguments to delete one Conta.
+     * @example
+     * // Delete one Conta
+     * const Conta = await prisma.conta.delete({
+     *   where: {
+     *     // ... filter to delete one Conta
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ContaDeleteArgs>(args: SelectSubset<T, ContaDeleteArgs<ExtArgs>>): Prisma__ContaClient<$Result.GetResult<Prisma.$ContaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Conta.
+     * @param {ContaUpdateArgs} args - Arguments to update one Conta.
+     * @example
+     * // Update one Conta
+     * const conta = await prisma.conta.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ContaUpdateArgs>(args: SelectSubset<T, ContaUpdateArgs<ExtArgs>>): Prisma__ContaClient<$Result.GetResult<Prisma.$ContaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Contas.
+     * @param {ContaDeleteManyArgs} args - Arguments to filter Contas to delete.
+     * @example
+     * // Delete a few Contas
+     * const { count } = await prisma.conta.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ContaDeleteManyArgs>(args?: SelectSubset<T, ContaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Contas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Contas
+     * const conta = await prisma.conta.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ContaUpdateManyArgs>(args: SelectSubset<T, ContaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Contas and returns the data updated in the database.
+     * @param {ContaUpdateManyAndReturnArgs} args - Arguments to update many Contas.
+     * @example
+     * // Update many Contas
+     * const conta = await prisma.conta.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Contas and only return the `id`
+     * const contaWithIdOnly = await prisma.conta.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ContaUpdateManyAndReturnArgs>(args: SelectSubset<T, ContaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Conta.
+     * @param {ContaUpsertArgs} args - Arguments to update or create a Conta.
+     * @example
+     * // Update or create a Conta
+     * const conta = await prisma.conta.upsert({
+     *   create: {
+     *     // ... data to create a Conta
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Conta we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ContaUpsertArgs>(args: SelectSubset<T, ContaUpsertArgs<ExtArgs>>): Prisma__ContaClient<$Result.GetResult<Prisma.$ContaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Contas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContaCountArgs} args - Arguments to filter Contas to count.
+     * @example
+     * // Count the number of Contas
+     * const count = await prisma.conta.count({
+     *   where: {
+     *     // ... the filter for the Contas we want to count
+     *   }
+     * })
+    **/
+    count<T extends ContaCountArgs>(
+      args?: Subset<T, ContaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ContaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Conta.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ContaAggregateArgs>(args: Subset<T, ContaAggregateArgs>): Prisma.PrismaPromise<GetContaAggregateType<T>>
+
+    /**
+     * Group by Conta.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ContaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ContaGroupByArgs['orderBy'] }
+        : { orderBy?: ContaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ContaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetContaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Conta model
+   */
+  readonly fields: ContaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Conta.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ContaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Conta model
+   */
+  interface ContaFieldRefs {
+    readonly id: FieldRef<"Conta", 'Int'>
+    readonly userId: FieldRef<"Conta", 'String'>
+    readonly itemId: FieldRef<"Conta", 'String'>
+    readonly contaId: FieldRef<"Conta", 'String'>
+    readonly instituicao: FieldRef<"Conta", 'String'>
+    readonly tipo: FieldRef<"Conta", 'String'>
+    readonly saldo: FieldRef<"Conta", 'String'>
+    readonly ultimaSync: FieldRef<"Conta", 'DateTime'>
+    readonly criadoEm: FieldRef<"Conta", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Conta findUnique
+   */
+  export type ContaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conta
+     */
+    select?: ContaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conta
+     */
+    omit?: ContaOmit<ExtArgs> | null
+    /**
+     * Filter, which Conta to fetch.
+     */
+    where: ContaWhereUniqueInput
+  }
+
+  /**
+   * Conta findUniqueOrThrow
+   */
+  export type ContaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conta
+     */
+    select?: ContaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conta
+     */
+    omit?: ContaOmit<ExtArgs> | null
+    /**
+     * Filter, which Conta to fetch.
+     */
+    where: ContaWhereUniqueInput
+  }
+
+  /**
+   * Conta findFirst
+   */
+  export type ContaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conta
+     */
+    select?: ContaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conta
+     */
+    omit?: ContaOmit<ExtArgs> | null
+    /**
+     * Filter, which Conta to fetch.
+     */
+    where?: ContaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Contas to fetch.
+     */
+    orderBy?: ContaOrderByWithRelationInput | ContaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Contas.
+     */
+    cursor?: ContaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Contas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Contas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Contas.
+     */
+    distinct?: ContaScalarFieldEnum | ContaScalarFieldEnum[]
+  }
+
+  /**
+   * Conta findFirstOrThrow
+   */
+  export type ContaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conta
+     */
+    select?: ContaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conta
+     */
+    omit?: ContaOmit<ExtArgs> | null
+    /**
+     * Filter, which Conta to fetch.
+     */
+    where?: ContaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Contas to fetch.
+     */
+    orderBy?: ContaOrderByWithRelationInput | ContaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Contas.
+     */
+    cursor?: ContaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Contas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Contas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Contas.
+     */
+    distinct?: ContaScalarFieldEnum | ContaScalarFieldEnum[]
+  }
+
+  /**
+   * Conta findMany
+   */
+  export type ContaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conta
+     */
+    select?: ContaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conta
+     */
+    omit?: ContaOmit<ExtArgs> | null
+    /**
+     * Filter, which Contas to fetch.
+     */
+    where?: ContaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Contas to fetch.
+     */
+    orderBy?: ContaOrderByWithRelationInput | ContaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Contas.
+     */
+    cursor?: ContaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Contas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Contas.
+     */
+    skip?: number
+    distinct?: ContaScalarFieldEnum | ContaScalarFieldEnum[]
+  }
+
+  /**
+   * Conta create
+   */
+  export type ContaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conta
+     */
+    select?: ContaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conta
+     */
+    omit?: ContaOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Conta.
+     */
+    data: XOR<ContaCreateInput, ContaUncheckedCreateInput>
+  }
+
+  /**
+   * Conta createMany
+   */
+  export type ContaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Contas.
+     */
+    data: ContaCreateManyInput | ContaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Conta createManyAndReturn
+   */
+  export type ContaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conta
+     */
+    select?: ContaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conta
+     */
+    omit?: ContaOmit<ExtArgs> | null
+    /**
+     * The data used to create many Contas.
+     */
+    data: ContaCreateManyInput | ContaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Conta update
+   */
+  export type ContaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conta
+     */
+    select?: ContaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conta
+     */
+    omit?: ContaOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Conta.
+     */
+    data: XOR<ContaUpdateInput, ContaUncheckedUpdateInput>
+    /**
+     * Choose, which Conta to update.
+     */
+    where: ContaWhereUniqueInput
+  }
+
+  /**
+   * Conta updateMany
+   */
+  export type ContaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Contas.
+     */
+    data: XOR<ContaUpdateManyMutationInput, ContaUncheckedUpdateManyInput>
+    /**
+     * Filter which Contas to update
+     */
+    where?: ContaWhereInput
+    /**
+     * Limit how many Contas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Conta updateManyAndReturn
+   */
+  export type ContaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conta
+     */
+    select?: ContaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conta
+     */
+    omit?: ContaOmit<ExtArgs> | null
+    /**
+     * The data used to update Contas.
+     */
+    data: XOR<ContaUpdateManyMutationInput, ContaUncheckedUpdateManyInput>
+    /**
+     * Filter which Contas to update
+     */
+    where?: ContaWhereInput
+    /**
+     * Limit how many Contas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Conta upsert
+   */
+  export type ContaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conta
+     */
+    select?: ContaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conta
+     */
+    omit?: ContaOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Conta to update in case it exists.
+     */
+    where: ContaWhereUniqueInput
+    /**
+     * In case the Conta found by the `where` argument doesn't exist, create a new Conta with this data.
+     */
+    create: XOR<ContaCreateInput, ContaUncheckedCreateInput>
+    /**
+     * In case the Conta was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ContaUpdateInput, ContaUncheckedUpdateInput>
+  }
+
+  /**
+   * Conta delete
+   */
+  export type ContaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conta
+     */
+    select?: ContaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conta
+     */
+    omit?: ContaOmit<ExtArgs> | null
+    /**
+     * Filter which Conta to delete.
+     */
+    where: ContaWhereUniqueInput
+  }
+
+  /**
+   * Conta deleteMany
+   */
+  export type ContaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Contas to delete
+     */
+    where?: ContaWhereInput
+    /**
+     * Limit how many Contas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Conta without action
+   */
+  export type ContaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conta
+     */
+    select?: ContaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conta
+     */
+    omit?: ContaOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -12057,7 +13242,8 @@ export namespace Prisma {
     valor: 'valor',
     icone: 'icone',
     cor: 'cor',
-    userId: 'userId'
+    userId: 'userId',
+    pluggyTransactionId: 'pluggyTransactionId'
   };
 
   export type TransacaoScalarFieldEnum = (typeof TransacaoScalarFieldEnum)[keyof typeof TransacaoScalarFieldEnum]
@@ -12162,6 +13348,21 @@ export namespace Prisma {
   };
 
   export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum]
+
+
+  export const ContaScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    itemId: 'itemId',
+    contaId: 'contaId',
+    instituicao: 'instituicao',
+    tipo: 'tipo',
+    saldo: 'saldo',
+    ultimaSync: 'ultimaSync',
+    criadoEm: 'criadoEm'
+  };
+
+  export type ContaScalarFieldEnum = (typeof ContaScalarFieldEnum)[keyof typeof ContaScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -12271,6 +13472,7 @@ export namespace Prisma {
     icone?: StringFilter<"Transacao"> | string
     cor?: StringFilter<"Transacao"> | string
     userId?: StringFilter<"Transacao"> | string
+    pluggyTransactionId?: StringNullableFilter<"Transacao"> | string | null
   }
 
   export type TransacaoOrderByWithRelationInput = {
@@ -12282,10 +13484,12 @@ export namespace Prisma {
     icone?: SortOrder
     cor?: SortOrder
     userId?: SortOrder
+    pluggyTransactionId?: SortOrderInput | SortOrder
   }
 
   export type TransacaoWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    pluggyTransactionId?: string
     AND?: TransacaoWhereInput | TransacaoWhereInput[]
     OR?: TransacaoWhereInput[]
     NOT?: TransacaoWhereInput | TransacaoWhereInput[]
@@ -12296,7 +13500,7 @@ export namespace Prisma {
     icone?: StringFilter<"Transacao"> | string
     cor?: StringFilter<"Transacao"> | string
     userId?: StringFilter<"Transacao"> | string
-  }, "id">
+  }, "id" | "pluggyTransactionId">
 
   export type TransacaoOrderByWithAggregationInput = {
     id?: SortOrder
@@ -12307,6 +13511,7 @@ export namespace Prisma {
     icone?: SortOrder
     cor?: SortOrder
     userId?: SortOrder
+    pluggyTransactionId?: SortOrderInput | SortOrder
     _count?: TransacaoCountOrderByAggregateInput
     _avg?: TransacaoAvgOrderByAggregateInput
     _max?: TransacaoMaxOrderByAggregateInput
@@ -12326,6 +13531,7 @@ export namespace Prisma {
     icone?: StringWithAggregatesFilter<"Transacao"> | string
     cor?: StringWithAggregatesFilter<"Transacao"> | string
     userId?: StringWithAggregatesFilter<"Transacao"> | string
+    pluggyTransactionId?: StringNullableWithAggregatesFilter<"Transacao"> | string | null
   }
 
   export type MetaWhereInput = {
@@ -12825,6 +14031,80 @@ export namespace Prisma {
     criadoEm?: DateTimeWithAggregatesFilter<"PushSubscription"> | Date | string
   }
 
+  export type ContaWhereInput = {
+    AND?: ContaWhereInput | ContaWhereInput[]
+    OR?: ContaWhereInput[]
+    NOT?: ContaWhereInput | ContaWhereInput[]
+    id?: IntFilter<"Conta"> | number
+    userId?: StringFilter<"Conta"> | string
+    itemId?: StringFilter<"Conta"> | string
+    contaId?: StringFilter<"Conta"> | string
+    instituicao?: StringFilter<"Conta"> | string
+    tipo?: StringFilter<"Conta"> | string
+    saldo?: StringFilter<"Conta"> | string
+    ultimaSync?: DateTimeFilter<"Conta"> | Date | string
+    criadoEm?: DateTimeFilter<"Conta"> | Date | string
+  }
+
+  export type ContaOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    itemId?: SortOrder
+    contaId?: SortOrder
+    instituicao?: SortOrder
+    tipo?: SortOrder
+    saldo?: SortOrder
+    ultimaSync?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type ContaWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    contaId?: string
+    AND?: ContaWhereInput | ContaWhereInput[]
+    OR?: ContaWhereInput[]
+    NOT?: ContaWhereInput | ContaWhereInput[]
+    userId?: StringFilter<"Conta"> | string
+    itemId?: StringFilter<"Conta"> | string
+    instituicao?: StringFilter<"Conta"> | string
+    tipo?: StringFilter<"Conta"> | string
+    saldo?: StringFilter<"Conta"> | string
+    ultimaSync?: DateTimeFilter<"Conta"> | Date | string
+    criadoEm?: DateTimeFilter<"Conta"> | Date | string
+  }, "id" | "contaId">
+
+  export type ContaOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    itemId?: SortOrder
+    contaId?: SortOrder
+    instituicao?: SortOrder
+    tipo?: SortOrder
+    saldo?: SortOrder
+    ultimaSync?: SortOrder
+    criadoEm?: SortOrder
+    _count?: ContaCountOrderByAggregateInput
+    _avg?: ContaAvgOrderByAggregateInput
+    _max?: ContaMaxOrderByAggregateInput
+    _min?: ContaMinOrderByAggregateInput
+    _sum?: ContaSumOrderByAggregateInput
+  }
+
+  export type ContaScalarWhereWithAggregatesInput = {
+    AND?: ContaScalarWhereWithAggregatesInput | ContaScalarWhereWithAggregatesInput[]
+    OR?: ContaScalarWhereWithAggregatesInput[]
+    NOT?: ContaScalarWhereWithAggregatesInput | ContaScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Conta"> | number
+    userId?: StringWithAggregatesFilter<"Conta"> | string
+    itemId?: StringWithAggregatesFilter<"Conta"> | string
+    contaId?: StringWithAggregatesFilter<"Conta"> | string
+    instituicao?: StringWithAggregatesFilter<"Conta"> | string
+    tipo?: StringWithAggregatesFilter<"Conta"> | string
+    saldo?: StringWithAggregatesFilter<"Conta"> | string
+    ultimaSync?: DateTimeWithAggregatesFilter<"Conta"> | Date | string
+    criadoEm?: DateTimeWithAggregatesFilter<"Conta"> | Date | string
+  }
+
   export type TransacaoCreateInput = {
     nome: string
     data: Date | string
@@ -12833,6 +14113,7 @@ export namespace Prisma {
     icone: string
     cor: string
     userId: string
+    pluggyTransactionId?: string | null
   }
 
   export type TransacaoUncheckedCreateInput = {
@@ -12844,6 +14125,7 @@ export namespace Prisma {
     icone: string
     cor: string
     userId: string
+    pluggyTransactionId?: string | null
   }
 
   export type TransacaoUpdateInput = {
@@ -12854,6 +14136,7 @@ export namespace Prisma {
     icone?: StringFieldUpdateOperationsInput | string
     cor?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    pluggyTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TransacaoUncheckedUpdateInput = {
@@ -12865,6 +14148,7 @@ export namespace Prisma {
     icone?: StringFieldUpdateOperationsInput | string
     cor?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    pluggyTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TransacaoCreateManyInput = {
@@ -12876,6 +14160,7 @@ export namespace Prisma {
     icone: string
     cor: string
     userId: string
+    pluggyTransactionId?: string | null
   }
 
   export type TransacaoUpdateManyMutationInput = {
@@ -12886,6 +14171,7 @@ export namespace Prisma {
     icone?: StringFieldUpdateOperationsInput | string
     cor?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    pluggyTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TransacaoUncheckedUpdateManyInput = {
@@ -12897,6 +14183,7 @@ export namespace Prisma {
     icone?: StringFieldUpdateOperationsInput | string
     cor?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    pluggyTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MetaCreateInput = {
@@ -13390,6 +14677,87 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ContaCreateInput = {
+    userId: string
+    itemId: string
+    contaId: string
+    instituicao: string
+    tipo: string
+    saldo: string
+    ultimaSync?: Date | string
+    criadoEm?: Date | string
+  }
+
+  export type ContaUncheckedCreateInput = {
+    id?: number
+    userId: string
+    itemId: string
+    contaId: string
+    instituicao: string
+    tipo: string
+    saldo: string
+    ultimaSync?: Date | string
+    criadoEm?: Date | string
+  }
+
+  export type ContaUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    itemId?: StringFieldUpdateOperationsInput | string
+    contaId?: StringFieldUpdateOperationsInput | string
+    instituicao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    saldo?: StringFieldUpdateOperationsInput | string
+    ultimaSync?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContaUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    itemId?: StringFieldUpdateOperationsInput | string
+    contaId?: StringFieldUpdateOperationsInput | string
+    instituicao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    saldo?: StringFieldUpdateOperationsInput | string
+    ultimaSync?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContaCreateManyInput = {
+    id?: number
+    userId: string
+    itemId: string
+    contaId: string
+    instituicao: string
+    tipo: string
+    saldo: string
+    ultimaSync?: Date | string
+    criadoEm?: Date | string
+  }
+
+  export type ContaUpdateManyMutationInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    itemId?: StringFieldUpdateOperationsInput | string
+    contaId?: StringFieldUpdateOperationsInput | string
+    instituicao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    saldo?: StringFieldUpdateOperationsInput | string
+    ultimaSync?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContaUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    itemId?: StringFieldUpdateOperationsInput | string
+    contaId?: StringFieldUpdateOperationsInput | string
+    instituicao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    saldo?: StringFieldUpdateOperationsInput | string
+    ultimaSync?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -13427,6 +14795,26 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
   export type TransacaoCountOrderByAggregateInput = {
     id?: SortOrder
     nome?: SortOrder
@@ -13436,6 +14824,7 @@ export namespace Prisma {
     icone?: SortOrder
     cor?: SortOrder
     userId?: SortOrder
+    pluggyTransactionId?: SortOrder
   }
 
   export type TransacaoAvgOrderByAggregateInput = {
@@ -13451,6 +14840,7 @@ export namespace Prisma {
     icone?: SortOrder
     cor?: SortOrder
     userId?: SortOrder
+    pluggyTransactionId?: SortOrder
   }
 
   export type TransacaoMinOrderByAggregateInput = {
@@ -13462,6 +14852,7 @@ export namespace Prisma {
     icone?: SortOrder
     cor?: SortOrder
     userId?: SortOrder
+    pluggyTransactionId?: SortOrder
   }
 
   export type TransacaoSumOrderByAggregateInput = {
@@ -13516,6 +14907,24 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -13530,11 +14939,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type MetaCountOrderByAggregateInput = {
@@ -13709,21 +15113,6 @@ export namespace Prisma {
     id?: SortOrder
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
   export type LogLoginCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -13754,24 +15143,6 @@ export namespace Prisma {
 
   export type LogLoginSumOrderByAggregateInput = {
     id?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type ConsentimentoUsuarioCountOrderByAggregateInput = {
@@ -13899,12 +15270,60 @@ export namespace Prisma {
     id?: SortOrder
   }
 
+  export type ContaCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    itemId?: SortOrder
+    contaId?: SortOrder
+    instituicao?: SortOrder
+    tipo?: SortOrder
+    saldo?: SortOrder
+    ultimaSync?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type ContaAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type ContaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    itemId?: SortOrder
+    contaId?: SortOrder
+    instituicao?: SortOrder
+    tipo?: SortOrder
+    saldo?: SortOrder
+    ultimaSync?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type ContaMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    itemId?: SortOrder
+    contaId?: SortOrder
+    instituicao?: SortOrder
+    tipo?: SortOrder
+    saldo?: SortOrder
+    ultimaSync?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type ContaSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -13921,10 +15340,6 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type LayoutDashboardCreateordemInput = {
@@ -13970,6 +15385,20 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -14030,6 +15459,34 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -14066,48 +15523,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
 

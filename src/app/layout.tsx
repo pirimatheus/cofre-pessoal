@@ -5,6 +5,7 @@ import { ConfigProvider } from "@/context/config-context";
 import IAChat from "@/components/ia-chat";
 import { RegisterSW } from "@/components/register-sw";
 import { InstallBanner } from "@/components/install-banner";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({
           <RegisterSW />
           <InstallBanner />
         </ConfigProvider>
+        <Script src="https://cdn.pluggy.ai/pluggy-connect/v2.8.2/pluggy-connect.js" strategy="afterInteractive" />      
       </body>
     </html>
   );

@@ -129,7 +129,8 @@ exports.Prisma.TransacaoScalarFieldEnum = {
   valor: 'valor',
   icone: 'icone',
   cor: 'cor',
-  userId: 'userId'
+  userId: 'userId',
+  pluggyTransactionId: 'pluggyTransactionId'
 };
 
 exports.Prisma.MetaScalarFieldEnum = {
@@ -206,6 +207,18 @@ exports.Prisma.PushSubscriptionScalarFieldEnum = {
   criadoEm: 'criadoEm'
 };
 
+exports.Prisma.ContaScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  itemId: 'itemId',
+  contaId: 'contaId',
+  instituicao: 'instituicao',
+  tipo: 'tipo',
+  saldo: 'saldo',
+  ultimaSync: 'ultimaSync',
+  criadoEm: 'criadoEm'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -232,7 +245,8 @@ exports.Prisma.ModelName = {
   ConsentimentoUsuario: 'ConsentimentoUsuario',
   LayoutDashboard: 'LayoutDashboard',
   Notificacao: 'Notificacao',
-  PushSubscription: 'PushSubscription'
+  PushSubscription: 'PushSubscription',
+  Conta: 'Conta'
 };
 
 /**

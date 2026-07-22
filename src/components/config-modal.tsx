@@ -4,6 +4,7 @@ import { usePushNotifications } from "@/hooks/use-push-notifications";
 import { useConfig } from "@/context/config-context";
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { PluggyConnectButton } from "./pluggy-connect-button";
 
 type Props = { onClose: () => void };
 
@@ -93,6 +94,13 @@ export default function ConfigModal({ onClose }: Props) {
           >
             Ativar notificações
           </button>
+        </div>
+        {/* Conexão bancária */}
+        <div className="pt-2" style={{ borderTop: "0.5px solid var(--color-border-tertiary)" }}>
+          <p className="mb-2" style={{ color: "var(--color-text-tertiary)", fontSize: "var(--font-size-xs)" }}>
+            Open Finance
+          </p>
+          <PluggyConnectButton />
         </div>
         {/* Zona de risco */}
         <div className="pt-2" style={{ borderTop: "0.5px solid var(--color-border-tertiary)" }}>

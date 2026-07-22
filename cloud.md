@@ -95,14 +95,19 @@ UsuarioPin, DispositivoConfiavel, LogLogin, ConsentimentoUsuario, LayoutDashboar
 
 ## Backlog técnico priorizado (decisão: PWA → Open Finance/Banco Central)
 
-### Fase 4 – PWA (🎯 ATUAL)
-- [ ] `manifest.json` (ícones, nome, theme-color, display: standalone)
-- [ ] Service Worker (Workbox ou `next-pwa`) — cache de assets + estratégia offline
-- [ ] Ícones e splash screens (iOS/Android)
-- [ ] Instalação: prompt `beforeinstallprompt` customizado
-- [ ] Push notifications (Web Push API / FCM)
-- [ ] Testar Lighthouse PWA score (meta: 100)
-- [ ] Fallback offline para páginas principais (Dashboard, Extrato)
+### Fase 4 – PWA (✅ QUASE COMPLETA)
+- [x] `manifest.json` (ícones, nome, theme-color, display: standalone, id)
+- [x] Service Worker (Serwist) — cache de assets + estratégia offline
+- [x] Ícones provisórios (192x192, 512x512, 512x512 maskable) — versão final pendente de reformulação visual
+- [x] Instalação: prompt `beforeinstallprompt` customizado + fallback manual pra iOS
+- [x] Push notifications (Web Push API, VAPID, service worker, rota de envio)
+- [x] Deploy funcionando na Vercel (https://cofre-pessoal-simplificado-e-leve.vercel.app)
+- [x] Login Google OAuth funcionando em produção (Supabase + Google Cloud configurados)
+- [x] Prisma resolvido definitivamente com driver adapter (@prisma/adapter-pg) — sem mais erros de query engine na Vercel
+- [para a proxima fase] Screenshots do manifest (wide + narrow) — pendente até reformulação visual
+- [ para a proxima fase] Reformulação visual do app (nova identidade, logo definitiva)
+- [ para a proxima fase] Testar Lighthouse PWA score novamente após reformulação
+- [ para a proxima fase] Corrigir viewport (`user-scalable=no` reduzindo acessibilidade)
 
 ### Fase 5 – Integração Bancária (Banco Central / Open Finance Brasil)
 - [ ] Avaliar agregador: Pluggy (mais simples/BR-first) vs Belvo

@@ -1,5 +1,6 @@
 {
   "name": "Cofre Pessoal",
+  "id" : "/",
   "short_name": "Cofre",
   "description": "Controle financeiro pessoal",
   "start_url": "/",

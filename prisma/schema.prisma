@@ -24,6 +24,7 @@ model Transacao {
   icone  String
   cor    String
   userId String
+  pluggyTransactionId String?  @unique
 
   @@index([userId])
 }
@@ -111,6 +112,20 @@ model PushSubscription {
   p256dh    String
   auth      String
   criadoEm  DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Conta {
+  id            Int      @id @default(autoincrement())
+  userId        String
+  itemId        String   // id da conexão no Pluggy
+  contaId       String   @unique // id da conta específica no Pluggy
+  instituicao   String
+  tipo          String   // ex: "corrente", "poupança", "cartão"
+  saldo         String
+  ultimaSync    DateTime @default(now())
+  criadoEm      DateTime @default(now())
 
   @@index([userId])
 }
